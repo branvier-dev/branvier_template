@@ -5,21 +5,29 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "branvier_template",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "branvier_template (profile mode)",
+            "name": "branvier_template (debug staging)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "args": [
+                "--dart-define=ENV=staging",
+            ]
         },
         {
-            "name": "branvier_template (release mode)",
+            "name": "branvier_template (debug production)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "args": [
+                "--dart-define=ENV=production",
+            ]
+        },
+        {
+            "name": "branvier_template (profile staging)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--dart-define=ENV=profile",
+            ]
         }
     ]
 }

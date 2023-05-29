@@ -3,16 +3,16 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import 'app/app_module.dart';
 import 'app/app_widget.dart';
+import 'app/data/source/hive_box.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   //Config
-  Modular.setNavigatorKey(App.key);
+  await HiveBox.init();
   Modular.setInitialRoute('/home/');
+  // Modular.init(AppModule());
 
   //Start
   return runApp(ModularApp(module: AppModule(), child: const AppWidget()));
-}
-
-mixin App {
-  static final key = GlobalKey<NavigatorState>();
 }

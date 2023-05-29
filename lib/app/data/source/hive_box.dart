@@ -1,23 +1,29 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:branvier/branvier.dart';
 import 'package:hive/hive.dart';
 
 ///Super fast cached preferences.
-class HiveBox implements IOpenBox {
-  late final Box _storage;
+class HiveBox implements IBox {
+  late final Box _storage = Hive.box('box');
 
-  Future<HiveBox> init() async {
-    Hive.init('open');
-    _storage = await Hive.openBox('box');
-    return this;
+  static Future<void> init() async {
+    Hive.init('storage');
+    await Hive.openBox('box');
   }
 
   @override
   T? read<T>(String key, {or}) {
-    final data = _storage.get(key);
-    if (data == null && or != null) unawaited(write(key, or));
-    return data ?? or;
+    try {
+      final data = _storage.get(key);
+      if (data != null) return jsonEncode(data).parse<T>();
+      if (data == null && or != null) write(key, or);
+      return data ?? or;
+    } catch (e) {
+      delete(key);
+      rethrow;
+    }
   }
 
   @override

@@ -25,9 +25,9 @@ This guide will walk you through the steps to configure entitlements in your Flu
         <true/>
         <key>com.apple.security.cs.allow-jit</key>
         <true/>
-        <key>com.apple.security.network.server</key> // <--- for dio
+        <key>com.apple.security.network.server</key>
         <true/>
-        <key>com.apple.security.network.client</key>
+        <key>com.apple.security.network.client</key> // <--- for dio
         <true/>
         <key>keychain-access-groups</key> // <--- for flutter_secure_storage
         <array>

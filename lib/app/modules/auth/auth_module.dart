@@ -1,17 +1,21 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'auth_controller.dart';
-import 'auth_page.dart';
+import 'login/login_page.dart';
+import 'register/register_page.dart';
+import 'services/project_auth_service.dart';
+import 'services/repositories/project_auth_repository.dart';
 
-///Binds [AuthController] to [AuthPage].
 class AuthModule extends Module {
   @override
   final List<Bind> binds = [
-    Bind((i) => AuthController()),
+    AutoBind.lazySingleton(ProjectAuthRepository.new),
+    AutoBind.lazySingleton(ProjectAuthService.new),
+    // AutoBind.lazySingleton(GoogleAuthService.new),
+    // AutoBind.lazySingleton(FacebookAuthService.new),
   ];
 
   @override
   final List<ModularRoute> routes = [
-    //You can also have separate login or signup here.
-    ChildRoute('/', child: (_, args) => const AuthPage()),
+    ChildRoute('/login/', child: (_, args) => const LoginPage()),
+    ChildRoute('/register/', child: (_, args) => const RegisterPage()),
   ];
 }
