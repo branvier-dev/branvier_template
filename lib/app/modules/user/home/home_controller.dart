@@ -1,26 +1,31 @@
+import 'dart:math';
+
 import 'package:branvier/branvier.dart';
-import 'package:branvier/state.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+
+import '../../cart/data/cart_service.dart';
+import 'home_page.dart';
 
 ///Controls HomePage.
 class HomeController {
   //States
-  final _count = 1.obs;
-  final _check = false.obs;
-  final formx = FormController();
+  CartService get _cart => Modular.get();
 
-  //Getters
-  int get count => _count.value;
-  bool get isCheck => _check.value;
+  List<Product> get items => _cart.items;
 
-  //Events
-  void onIncrement() => _count.value++;
-
-  Future<void> onBoxCheck() async {
-    _check.toggle(); //alternates between true & false
+  Future<List<Product>> getProducts() async {
+    await 2.seconds.delay;
+    
+    return List.generate(18, (index) {
+      return Product(index, 'Product $index', Random().nextDouble() * 25);
+    });
   }
 
-  // ! verify if this is attached to the AutoBind.singleton onDispose
-  void onDispose() {
-    // someService.disposeSomething();
+  void onItemSelect(Product product) {
+    _cart.addProduct(product);
+  }
+
+  void onItemUnselect(Product product) {
+    _cart.removeProduct(product);
   }
 }

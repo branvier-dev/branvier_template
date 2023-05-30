@@ -25,7 +25,7 @@ class AppModule extends Module {
     // * Repositories
     AutoBind.lazySingleton(TranslationRepository.new),
     AutoBind.lazySingleton(ThemeRepository.new),
-    AutoBind.lazySingleton((i) => AuthRepository.new),
+    AutoBind.lazySingleton(AuthRepository.new),
 
     // * Services
     AutoBind.lazySingleton(TranslationService.new),

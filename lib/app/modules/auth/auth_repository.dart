@@ -3,7 +3,6 @@ import 'package:branvier/branvier.dart';
 import '../user/user.dart';
 
 const key = '';
-
 /// [AuthRepository] encapsulates all data processing of Auth.
 class AuthRepository {
   AuthRepository(this._api, this._box);
