@@ -1,3 +1,4 @@
+import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -11,13 +12,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final count = context.select(() => controller.counter);
+
     return Scaffold(
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          child: const Text('Open Drawer'),
+          onPressed: controller.onIncrement,
+          child: RxBuilder(
+            builder: (_) => Text(controller.count),
+          ),
         ),
       ),
     );
