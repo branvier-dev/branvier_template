@@ -1,7 +1,7 @@
 import 'package:asp/asp.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../shared/models/user.dart';
-import '../../../../shared/repositories/user_repository.dart';
+import '../../../shared/models/user.dart';
+import '../../../shared/repositories/user_repository.dart';
 
 class UserService {
   UserService(this._repository);

@@ -2,10 +2,10 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../home/home_module.dart';
 import '../../shared/repositories/user_repository.dart';
-import 'data/services/user_service.dart';
-import 'view/appbar/appbar_controller.dart';
-import 'view/drawer/drawer_controller.dart';
-import 'view/user_outlet.dart';
+import 'services/user_service.dart';
+import 'views/appbar/appbar_controller.dart';
+import 'views/drawer/drawer_controller.dart';
+import 'views/user_outlet.dart';
 
 class UserModule extends Module {
   @override

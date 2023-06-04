@@ -1,6 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../data/services/user_service.dart';
+import '../../services/user_service.dart';
 
 class DrawerController {
   //Services

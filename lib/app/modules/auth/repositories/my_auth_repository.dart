@@ -1,8 +1,8 @@
-import 'package:branvier_template/app/modules/auth/data/models/login_data.dart';
+import 'package:branvier_template/app/modules/auth/models/login_data.dart';
 import 'package:branvier_template/app/shared/models/user.dart';
 
-import '../../../../shared/sources/interfaces/api_interface.dart';
-import '../../../../shared/sources/interfaces/box_interface.dart';
+import '../../../shared/sources/interfaces/api_interface.dart';
+import '../../../shared/sources/interfaces/box_interface.dart';
 
 class MyAuthRepository {
   MyAuthRepository(this._api, this._box);

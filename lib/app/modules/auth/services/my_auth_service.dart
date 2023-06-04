@@ -1,4 +1,4 @@
-import 'package:branvier_template/app/modules/auth/data/models/login_data.dart';
+import 'package:branvier_template/app/modules/auth/models/login_data.dart';
 
 import '../repositories/my_auth_repository.dart';
 
