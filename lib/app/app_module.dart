@@ -1,17 +1,14 @@
-import 'package:branvier/branvier.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'app_routes.dart';
-import 'core/theme/theme_repository.dart';
-import 'core/theme/theme_service.dart';
-import 'core/translation/translation_repository.dart';
-import 'core/translation/translation_service.dart';
-import 'data/source/dio_api.dart';
-import 'data/source/hive_box.dart';
+import 'shared/sources/dio_api.dart';
+import 'shared/sources/hive_box.dart';
+import 'shared/sources/interfaces/api_interface.dart';
+import 'shared/sources/interfaces/box_interface.dart';
 import 'modules/auth/auth_module.dart';
-import 'modules/auth/auth_repository.dart';
-import 'modules/auth/auth_service.dart';
-import 'modules/user/user.dart';
+import 'shared/repositories/auth_repository.dart';
+import 'shared/services/auth_service.dart';
+import 'shared/models/user.dart';
 import 'modules/user/user_module.dart';
 
 ///Binds the global sources, repositories and services to the app.
@@ -23,19 +20,15 @@ class AppModule extends Module {
     AutoBind.lazySingleton<IBox>(HiveBox.new),
 
     // * Repositories
-    AutoBind.lazySingleton(TranslationRepository.new),
-    AutoBind.lazySingleton(ThemeRepository.new),
     AutoBind.lazySingleton(AuthRepository.new),
 
     // * Services
-    AutoBind.lazySingleton(TranslationService.new),
-    AutoBind.lazySingleton(ThemeService.new),
     AutoBind.lazySingleton(AuthService.new),
   ];
 
   @override
   final List<ModularRoute> routes = [
-    //Only logged.
+    //Logged.
     ModuleRoute('/', module: UserModule(), guards: [AuthGuard(), UserGuard()]),
 
     //Public.
@@ -44,7 +37,7 @@ class AppModule extends Module {
 }
 
 class AuthGuard extends RouteGuard {
-  AuthGuard() : super(redirectTo: Routes.login);
+  AuthGuard() : super(redirectTo: AppRoutes.login);
 
   @override
   Future<bool> canActivate(String path, ModularRoute route) async {
@@ -53,7 +46,7 @@ class AuthGuard extends RouteGuard {
 }
 
 class UserGuard extends RouteGuard {
-  UserGuard() : super(redirectTo: Routes.login);
+  UserGuard() : super(redirectTo: AppRoutes.login);
 
   @override
   Future<bool> canActivate(String path, ModularRoute route) async {

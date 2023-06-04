@@ -1,22 +1,24 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../cart/data/cart_repository.dart';
-import '../cart/data/cart_service.dart';
-import 'home/home_page.dart';
-import 'user_repository.dart';
-import 'user_service.dart';
-import 'widgets/user_outlet.dart';
+import '../home/home_module.dart';
+import '../../shared/repositories/user_repository.dart';
+import 'data/services/user_service.dart';
+import 'view/appbar/appbar_controller.dart';
+import 'view/drawer/drawer_controller.dart';
+import 'view/user_outlet.dart';
 
 class UserModule extends Module {
   @override
   final List<Bind> binds = [
     // * Repositories
     AutoBind.singleton(UserRepository.new),
-    AutoBind.singleton(CartRepository.new),
 
     // * Services
     AutoBind.singleton(UserService.new),
-    AutoBind.singleton(CartService.new),
+
+    // * Controllers
+    AutoBind.lazySingleton(DrawerController.new),
+    AutoBind.lazySingleton(AppBarController.new),
   ];
 
   @override
@@ -25,10 +27,8 @@ class UserModule extends Module {
       '/',
       child: (_, args) => const UserOutlet(),
       children: [
-        ChildRoute('/home/', child: (_, args) => const HomePage()),
+        ModuleRoute('/home', module: HomeModule()),
       ],
     ),
   ];
 }
-
-// class Modules extends ModuleRoute {}

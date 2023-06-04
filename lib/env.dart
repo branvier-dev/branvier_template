@@ -28,16 +28,18 @@ mixin Env {
 
 mixin _Local {
   /// The [apiUrl] hosted in a local server.
+  /// todo: change this to your local url.
   static const apiUrl = Env.isLocal ? 'http://localhost:3348/v1' : null;
 }
 
 mixin _Staging {
   /// The [apiUrl] used for internal testing.
-  /// ! "reqres" is an open source api ! Replace with yours.
-  static const apiUrl = Env.isStaging ? 'https://reqres.in/api/' : null;
+  /// todo: change this to your staging url.
+  static const apiUrl = Env.isStaging ? 'https://reqres.in/api' : null;
 }
 
 mixin _Production {
   /// The [apiUrl] used for official releases.
+  /// todo: change this to your production url.
   static const apiUrl = Env.isProduction ? '' : null;
 }
