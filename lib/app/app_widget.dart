@@ -6,12 +6,8 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp.router(
-      //Routes
-      // routerConfig: Modular.routerConfig,
-      routerDelegate: Modular.routerDelegate,
-      routeInformationParser: Modular.routeInformationParser,
+      routerConfig: Modular.routerConfig,
     );
   }
 }

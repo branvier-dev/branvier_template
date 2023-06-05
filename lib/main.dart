@@ -5,14 +5,13 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'app/app_module.dart';
 import 'app/app_widget.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
 
-  //Config
+  // * Support methods
   Modular.setInitialRoute('/home/');
 
-  //Start
+  // * Start
   return runApp(
-    ModularApp(module: AppModule(), child: RxRoot(child: const AppWidget())),
+    ModularApp(module: AppModule(), child: const RxRoot(child: AppWidget())),
   );
 }

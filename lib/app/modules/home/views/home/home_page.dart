@@ -12,9 +12,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final count = context.select(() => controller.counter);
+    // final count = context.select(() => controller.count);
 
     return Scaffold(
+      appBar: AppBar(title: Text(Modular.to.path)),
       body: Center(
         child: ElevatedButton(
           onPressed: controller.onIncrement,

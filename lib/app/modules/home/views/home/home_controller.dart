@@ -1,7 +1,6 @@
 import 'package:asp/asp.dart';
 
 class HomeController {
-
   //States
   final _count = Atom(0);
 
