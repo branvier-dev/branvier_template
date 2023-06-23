@@ -1,4 +1,4 @@
-import 'package:branvier/state.dart';
+import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -16,14 +16,22 @@ class UserOutlet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
-        key: cart.drawerKey,
-        appBar: const AppBarWidget(),
-        drawer: const DrawerWidget(),
-        endDrawer: const CartDrawerWidget(),
-        floatingActionButton: cart.isNotEmpty ? const CartButtonWidget() : null,
-        body: const RouterOutlet(),
+    return Scaffold(
+      key: cart.drawerKey,
+      appBar: const AppBarWidget(),
+      drawer: const DrawerWidget(),
+      endDrawer: const CartDrawerWidget(),
+      floatingActionButton: context.select(() {
+        return cart.items.isNotEmpty ? const CartButtonWidget() : null;
+      }),
+      body: RouterOutlet(
+        observers: [
+          HeroController(
+            createRectTween: (begin, end) {
+              return MaterialRectCenterArcTween(begin: begin, end: end);
+            },
+          ),
+        ],
       ),
     );
   }

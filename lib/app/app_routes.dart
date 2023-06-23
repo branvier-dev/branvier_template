@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_function_declarations_over_variables
 
-import 'package:flutter_modular/flutter_modular.dart';
 
 /// App [Routes].
 mixin Routes {

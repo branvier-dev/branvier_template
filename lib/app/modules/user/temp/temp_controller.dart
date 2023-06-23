@@ -10,7 +10,6 @@ class TempController extends Disposable {
   //Getters
   //
 
-  /// [TempPage] initializer
   Future<void> init() async {}
 
   @override

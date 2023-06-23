@@ -5,11 +5,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'login_controller.dart';
 
 ///[LoginPage] is a view controlled by [LoginController].
-class LoginPage extends WidgetModule {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
-  @override
-  List<Bind> get binds => [AutoBind.lazySingleton(LoginController.new)];
 
   /// Get instance of [LoginController].
   LoginController get controller => Modular.get();
@@ -32,7 +30,8 @@ class LoginPage extends WidgetModule {
                 const Divider(),
                 Row(
                   children: [
-                    ElevatedButtonX(
+                    RxElevatedButton(
+                     
                       onPressed: controller.onLoginTap,
                       child: Text('login.onLoginTap'.tr),
                     ),
@@ -115,7 +114,6 @@ class _ModularProvider extends StatefulWidget {
   final String tag;
 
   const _ModularProvider({
-    super.key,
     required this.child,
     required this.module,
     required this.tag,

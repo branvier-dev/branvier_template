@@ -1,5 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'login/login_controller.dart';
 import 'login/login_page.dart';
+import 'register/register_controller.dart';
 import 'register/register_page.dart';
 import 'services/project_auth_service.dart';
 import 'services/repositories/project_auth_repository.dart';
@@ -11,6 +13,9 @@ class AuthModule extends Module {
     AutoBind.lazySingleton(ProjectAuthService.new),
     // AutoBind.lazySingleton(GoogleAuthService.new),
     // AutoBind.lazySingleton(FacebookAuthService.new),
+
+    AutoBind.lazySingleton(LoginController.new),
+    AutoBind.lazySingleton(RegisterController.new),
   ];
 
   @override

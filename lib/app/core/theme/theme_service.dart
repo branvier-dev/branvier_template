@@ -1,4 +1,4 @@
-import 'package:branvier/state.dart';
+import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 
 import 'colors.dart';
@@ -11,7 +11,7 @@ class ThemeService {
   final ThemeRepository _repository;
 
   //State
-  final _data = ThemeData().obs;
+  final _data = Atom(ThemeData());
 
   //Current theme data.
   ThemeData get data => _data.value;

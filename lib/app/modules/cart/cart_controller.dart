@@ -1,5 +1,5 @@
+import 'package:asp/asp.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:getx_lite/getx_lite.dart';
 
 ///Controls CartPage.
 class CartController extends Disposable {
@@ -7,10 +7,10 @@ class CartController extends Disposable {
   // final CartService _cart = Modular.get();
 
   // * States
-  final _count = 1.obs;
+  final _count = Atom(1);
 
   // * Getters
-  String get count => _count.string;
+  String get count => _count.value.toString();
 
   // * Events
   void onIncrement() => _count.value++;

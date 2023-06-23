@@ -12,14 +12,17 @@ dependencies:
   branvier:
     git: https://github.com/Branvier/branvier.git
 
-  flutter_modular: ^6.0.0-beta.1
+  flutter_modular: ^6.0.0-beta.3
   flutter_hooks: ^0.18.6
   hive: ^2.2.3
   dio: ^5.1.1
   flutter_secure_storage: ^8.0.0
   google_fonts: ^4.0.5
   mocktail: ^0.3.0
-  getx_lite: ^4.6.5
+  asp: ^1.0.4
+  dartx: ^1.1.0
+  asuka: ^2.1.0
+  
 
 dev_dependencies: 
   flutter_lints: 2.0.1

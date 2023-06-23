@@ -1,22 +1,26 @@
-import 'package:branvier/state.dart';
+import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../user/home/home_page.dart';
 import '../data/cart_repository.dart';
 
-/// [CartService] encapsulates all business logic of [CartItem].
-class CartService {
-  CartService(this._repository);
+class CartService extends Reducer implements Disposable {
+  // ignore: unused_field
   final CartRepository _repository;
+
+  CartService(this._repository) {
+    on(() => _items.value, () {
+      if (_items.isEmpty) drawerKey.currentState?.closeEndDrawer();
+    });
+  }
 
   // * States
   final drawerKey = GlobalKey<ScaffoldState>();
-  final _items = <Product>[].obs;
+  final _items = <Product>[].asAtom();
 
   /// All [Product]
   List<Product> get items => _items.toList();
-
-  bool get isNotEmpty => _items.isNotEmpty;
 
   Future<void> openCart() async {
     drawerKey.currentState?.openEndDrawer();
@@ -28,10 +32,10 @@ class CartService {
 
   void removeProduct(Product product) {
     _items.remove(product);
-    if (items.isEmpty) drawerKey.currentState?.closeEndDrawer();
   }
 
   void clearCart() {
     _items.clear();
   }
+
 }

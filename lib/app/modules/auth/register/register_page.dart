@@ -5,11 +5,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'register_controller.dart';
 
 ///[RegisterPage] is a view controlled by [RegisterController].
-class RegisterPage extends WidgetModule {
+class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
-
-  @override
-  List<Bind> get binds => [AutoBind.lazySingleton(RegisterController.new)];
 
   /// Get instance of [RegisterController].
   RegisterController get controller => Modular.get();
@@ -31,8 +28,8 @@ class RegisterPage extends WidgetModule {
                     Field.required('email'),
                     Field.required('password'),
                     const Divider(),
-                    ElevatedButtonX(
-                      hasFormx: true,
+                    RxElevatedButton(
+                      listenables: [FormX.loading],
                       onPressed: controller.onRegister,
                       child: Text('register.onRegister'.tr),
                     ),

@@ -6,8 +6,7 @@ import 'package:dio/dio.dart';
 import '../../../env.dart';
 
 class DioApi implements IApi {
-  DioApi(this._box);
-  final IBox _box;
+  DioApi();
 
   ///Http client.
   final api = Dio(BaseOptions(baseUrl: Env.apiUrl));
@@ -46,8 +45,8 @@ class DioApi implements IApi {
 
   ///Handles errors into exceptions key codes.
   Future<T> _error<T>(Object? e) async {
-    if (e is DioError) {
-      if (e.type == DioErrorType.badResponse) return _response(e.response!);
+    if (e is DioException) {
+      if (e.type == DioExceptionType.badResponse) return _response(e.response!);
       throw ApiException('API.${e.type.name.dotCase.toUpperCase()}');
     }
     throw ApiException('API.RESPONSE_ERROR');

@@ -1,5 +1,4 @@
-import 'package:branvier/branvier.dart';
-import 'package:flutter/material.dart';
+import 'package:dartx/dartx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../cart/data/cart_service.dart';
@@ -7,9 +6,6 @@ import '../../home/home_page.dart';
 
 class CartDrawerController {
   CartService get _cart => Modular.get();
-
-  /// Attach to drawer [Key].
-  Key get key => _cart.drawerKey;
 
   List<Product> get items => _cart.items;
 
@@ -23,6 +19,7 @@ class CartDrawerController {
 
   void onProceed() {
     //payment
+    
   }
 
   void onClearCart() {

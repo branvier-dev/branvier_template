@@ -3,12 +3,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import 'drawer_controller.dart';
 
-class DrawerWidget extends WidgetModule {
+class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
   
-  @override
-  List<Bind> get binds => [AutoBind.lazySingleton(DrawerController.new)];
-
   /// Get instance of [DrawerController].
   DrawerController get controller => Modular.get();
 
