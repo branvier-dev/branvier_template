@@ -1,2 +1,1 @@
-include: package:branvier/linter.yaml
-
+include: package:branvier_lints/analysis_options.yaml
