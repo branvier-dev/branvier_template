@@ -65,7 +65,7 @@ class LoginPage extends StatelessWidget {
                             // final dto = LoginDto.fromMap(form);
                             // await context.read<AuthStore>().login(dto);
 
-                            // if (context.mounted) context.go(HomePage.path);
+                            if (context.mounted) context.go(HomePage.path);
                           },
                           child: const Text('Entrar'),
                         ).asAsync(),

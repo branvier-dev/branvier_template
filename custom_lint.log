@@ -2786,3 +2786,29 @@ The Dart VM service is listening on http://127.0.0.1:49257/9L9Y-87MJ8w=/
 The Dart DevTools debugger and profiler is available at: http://127.0.0.1:49257/9L9Y-87MJ8w=/devtools?uri=ws://127.0.0.1:49257/9L9Y-87MJ8w=/ws
 The Dart VM service is listening on http://127.0.0.1:49984/tewdhwT3ekk=/
 The Dart DevTools debugger and profiler is available at: http://127.0.0.1:49984/tewdhwT3ekk=/devtools?uri=ws://127.0.0.1:49984/tewdhwT3ekk=/ws
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 Plugin ConvertPositionalToNamedFormal threw while analyzing /Users/juan/GitHub/branvier_template/lib/app/app_router.dart:
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 Could not format because the source could not be parsed:
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 line 27, column 21 of .: Expected to find ')'.
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199    ╷
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 27 │         builder: (__{required this._,}) => const LoginPage(),
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199    │                     ^
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199    ╵
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #0      DartFormatter.formatSource (package:dart_style/src/dart_formatter.dart:154:7)
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #1      DartFileEditBuilderImpl.format (package:analyzer_plugin/src/utilities/change_builder/change_builder_dart.dart:1527:43)
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #2      ConvertPositionalToNamedFormal.run.<anonymous closure>.<anonymous closure> (package:leancode_lint/assists/convert_positional_to_named_formal.dart:98:17)
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #3      ChangeBuilderImpl.addDartFileEdit (package:analyzer_plugin/src/utilities/change_builder/change_builder_core.dart:151:26)
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 <asynchronous suspension>
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #4      Future.wait.<anonymous closure> (dart:async/future.dart:518:21)
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 <asynchronous suspension>
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #5      _ChangeBuilderImpl._waitForCompletion (package:custom_lint_core/src/change_reporter.dart:167:5)
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 <asynchronous suspension>
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #6      Future.wait.<anonymous closure> (dart:async/future.dart:518:21)
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 <asynchronous suspension>
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #7      _ClientAnalyzerPlugin.handleEditGetAssists (package:custom_lint_builder/src/client.dart:515:7)
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 <asynchronous suspension>
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #8      ServerPlugin._getResponse (package:analyzer_plugin/plugin/plugin.dart:556:18)
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 <asynchronous suspension>
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #9      ServerPlugin._onRequest (package:analyzer_plugin/plugin/plugin.dart:599:18)
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 <asynchronous suspension>
+[ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199
