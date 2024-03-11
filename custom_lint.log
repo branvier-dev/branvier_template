@@ -2812,3 +2812,7 @@ The Dart DevTools debugger and profiler is available at: http://127.0.0.1:49984/
 [ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 #9      ServerPlugin._onRequest (package:analyzer_plugin/plugin/plugin.dart:599:18)
 [ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199 <asynchronous suspension>
 [ConvertPositionalToNamedFormal] 2024-03-08T14:58:36.647199
+The Dart VM service is listening on http://127.0.0.1:55582/WXh3sm6fXyo=/
+The Dart DevTools debugger and profiler is available at: http://127.0.0.1:55582/WXh3sm6fXyo=/devtools?uri=ws://127.0.0.1:55582/WXh3sm6fXyo=/ws
+The Dart VM service is listening on http://127.0.0.1:57561/B6ogUGKzF7E=/
+The Dart DevTools debugger and profiler is available at: http://127.0.0.1:57561/B6ogUGKzF7E=/devtools?uri=ws://127.0.0.1:57561/B6ogUGKzF7E=/ws
