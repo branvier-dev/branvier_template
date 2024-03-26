@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 import 'app_injector.dart';
 import 'features/account/views/account_page.dart';
+import 'features/account/views/edit_account_page.dart';
 import 'features/auth/stores/auth_store.dart';
 import 'features/auth/views/forgot_password_page.dart';
 import 'features/auth/views/login_page.dart';
@@ -45,11 +46,11 @@ mixin AppRouter {
 
         // * User
         StatefulShellRoute.indexedStack(
-          builder: (_, __, shell) => MultiProvider(
+          builder: (_, __, navigationShell) => MultiProvider(
             providers: [
               StoreProvider(create: (_) => UserStore(i())),
             ],
-            child: UserShell(shell: shell),
+            child: UserShell(navigationShell: navigationShell),
           ),
           branches: [
             StatefulShellBranch(
@@ -68,7 +69,7 @@ mixin AppRouter {
                   routes: [
                     GoRoute(
                       path: 'edit',
-                      builder: (_, __) => const AccountPage(),
+                      builder: (_, __) => const EditAccountPage(),
                     ),
                   ],
                 ),

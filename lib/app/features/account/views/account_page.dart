@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../auth/stores/auth_store.dart';
 import '../../user/stores/user_store.dart';
+import 'edit_account_page.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -24,6 +25,14 @@ class AccountPage extends StatelessWidget {
             Text(user.name),
             Text(user.email),
             const Gap(100),
+            OutlinedButton.icon(
+              onPressed: () {
+                context.go(EditAccountPage.path);
+              },
+              icon: const Icon(Icons.edit),
+              label: const Text('Edit Profile'),
+            ),
+            const Gap(8),
             OutlinedButton.icon(
               onPressed: () {
                 context.read<AuthStore>().logout();

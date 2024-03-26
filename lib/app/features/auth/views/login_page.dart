@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_async/flutter_async.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../home/views/home_page.dart';
+import '../models/login_dto.dart';
+import '../stores/auth_store.dart';
 import 'forgot_password_page.dart';
 import 'register_page.dart';
 
@@ -62,8 +65,12 @@ class LoginPage extends StatelessWidget {
                           onPressed: () async {
                             if (!form.validate()) return;
 
-                            // final dto = LoginDto.fromMap(form);
-                            // await context.read<AuthStore>().login(dto);
+                            final dto = LoginDto.fromMap(const {
+                              'email': 'mock@email.com',
+                              'password': '123',
+                            });
+
+                            await context.read<AuthStore>().login(dto);
 
                             if (context.mounted) context.go(HomePage.path);
                           },

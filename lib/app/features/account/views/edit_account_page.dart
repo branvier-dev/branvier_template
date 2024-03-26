@@ -3,13 +3,13 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../auth/stores/auth_store.dart';
 import '../../user/stores/user_store.dart';
+import 'account_page.dart';
 
 class EditAccountPage extends StatelessWidget {
   const EditAccountPage({super.key});
 
-  static const path = '/account';
+  static const path = '/account/edit';
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +20,16 @@ class EditAccountPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Account Page\n\n'),
+            const Text('Edit Account Page\n\n'),
             Text(user.name),
             Text(user.email),
             const Gap(100),
             OutlinedButton.icon(
               onPressed: () {
-                context.read<AuthStore>().logout();
-                context.go('/');
+                context.go(AccountPage.path);
               },
               icon: const Icon(Icons.exit_to_app),
-              label: const Text('SAIR'),
+              label: const Text('Voltar'),
             ),
           ],
         ),
