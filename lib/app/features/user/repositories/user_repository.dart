@@ -8,17 +8,10 @@ class UserRepository {
   final DioService api;
   final StorageService storage;
 
-  User getUser() {
-    final json = storage.get('user');
-
-    if (json case String json) {
-      return User.fromJson(json);
-    }
+  /// Get the cached user from the storage.
+  User get cachedUser {
+    if (storage.get('user') case String json) return User.fromJson(json);
 
     throw Exception('User not found');
-  }
-
-  void clearUser() {
-    storage.remove('user').ignore();
   }
 }

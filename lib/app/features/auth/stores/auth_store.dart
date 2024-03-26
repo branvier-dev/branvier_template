@@ -9,31 +9,17 @@ class AuthStore extends ChangeNotifier {
 
   final AuthRepository _repository;
 
-  String? _token;
-
-  bool get isLogged => _token != null;
-
-  Future<bool> authenticate() async {
-    // _token = await _repository.authenticate();
-    // notifyListeners();
-
-    // return true;
-    return isLogged;
-  }
+  bool get isLogged => _repository.isLogged;
 
   Future<void> login(LoginDto dto) async {
-    _token = await _repository.login(dto);
-    notifyListeners();
+    await _repository.login(dto);
   }
 
   Future<void> registerUser(RegisterUserDto dto) async {
     await _repository.registerUser(dto);
-    notifyListeners();
   }
 
   void logout() {
     _repository.logout();
-    _token = null;
-    notifyListeners();
   }
 }

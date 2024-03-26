@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import '../../auth/stores/auth_store.dart';
 import '../../user/stores/user_store.dart';
 
-class AccountPage extends StatelessWidget {
-  const AccountPage({super.key});
+class EditAccountPage extends StatelessWidget {
+  const EditAccountPage({super.key});
 
   static const path = '/account';
 

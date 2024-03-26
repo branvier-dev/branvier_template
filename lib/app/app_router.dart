@@ -13,61 +13,70 @@ import 'features/user/stores/user_store.dart';
 import 'features/user/views/user_shell.dart';
 
 mixin AppRouter {
-  static final i = AppInjector.i;
 
-  static final config = GoRouter(
-    routes: [
-      GoRoute(
-        path: '/',
-        redirect: (context, _) async {
-          final isLogged = await context.read<AuthStore>().authenticate();
+  static final config = () {
+    final i = AppInjector.instance;
 
-          return isLogged ? '/home' : null;
-        },
-        builder: (_, __) => const LoginPage(),
-      ),
-
-      // * Auth
-      GoRoute(
-        path: '/login',
-        builder: (_, __) => const LoginPage(),
-        routes: [
-          GoRoute(
-            path: 'register',
-            builder: (_, __) => const RegisterPage(),
-          ),
-          GoRoute(
-            path: 'forgot-password',
-            builder: (_, __) => const ForgotPasswordPage(),
-          ),
-        ],
-      ),
-
-      // * User
-      StatefulShellRoute.indexedStack(
-        builder: (_, __, shell) => MultiProvider(
-          providers: [StoreProvider(create: (_) => UserStore(i()))],
-          child: UserShell(shell: shell),
+    return GoRouter(
+      routes: [
+        GoRoute(
+          path: '/',
+          redirect: (context, _) {
+            return context.read<AuthStore>().isLogged ? '/home' : null;
+          },
+          builder: (_, __) => const LoginPage(),
         ),
-        branches: [
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/home',
-                builder: (_, __) => const HomePage(),
-              ),
+
+        // * Auth
+        GoRoute(
+          path: '/login',
+          builder: (_, __) => const LoginPage(),
+          routes: [
+            GoRoute(
+              path: 'register',
+              builder: (_, __) => const RegisterPage(),
+            ),
+            GoRoute(
+              path: 'forgot-password',
+              builder: (_, __) => const ForgotPasswordPage(),
+            ),
+          ],
+        ),
+
+        // * User
+        StatefulShellRoute.indexedStack(
+          builder: (_, __, shell) => MultiProvider(
+            providers: [
+              StoreProvider(create: (_) => UserStore(i())),
             ],
+            child: UserShell(shell: shell),
           ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/account',
-                builder: (_, __) => const AccountPage(),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ],
-  );
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/home',
+                  builder: (_, __) => const HomePage(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/account',
+                  builder: (_, __) => const AccountPage(),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      builder: (_, __) => const AccountPage(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }();
 }

@@ -15,18 +15,11 @@ void main() async {
   try {
     runApp(const AppSplash());
 
-    // setup
-    await [
-      Future.delayed(AppSplash.duration),
+    // Setup
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-      // Framework
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
-
-      // Dependency Injection
-      AppInjector.setup(),
-    ].wait;
-
-    final i = AppInjector.i;
+    // Dependency Injection
+    final i = await AppInjector.setup();
 
     runApp(
       MultiProvider(

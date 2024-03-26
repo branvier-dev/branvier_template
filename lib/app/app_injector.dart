@@ -1,28 +1,34 @@
-// ignore_for_file: inference_failure_on_function_invocation, avoid_late_keyword, avoid_global_state, lines_longer_than_80_chars
+// ignore_for_file: inference_failure_on_function_invocation
 
 import 'package:auto_injector/auto_injector.dart';
+import 'package:provider/provider.dart';
 
 import 'core/repositories/theme_repository.dart';
 import 'features/auth/repositories/auth_repository.dart';
 import 'features/user/repositories/user_repository.dart';
 import 'services/api/dio_service.dart';
-import 'services/crypto/crypto_service.dart';
-import 'services/crypto/flutter_secure_storage_impl.dart';
 import 'services/storage/hive_impl.dart';
 import 'services/storage/storage_service.dart';
+import 'shared/widgets/app_splash.dart';
 
 mixin AppInjector {
-  static late AutoInjector i;
+  static Locator? _instance;
 
-  static Future<void> setup() async {
-    i = AutoInjector();
+  /// The instance of [AppInjector]. Only the [Injector.get] is accessible.
+  static Locator get instance {
+    if (_instance case Locator instance) return instance;
+    throw Exception('You must call AppInjector.setup() before using it.');
+  }
+
+  static Future<Locator> setup() async {
+    final i = AutoInjector();
+    final splash = Future.delayed(AppSplash.duration);
 
     // services
     i.addLazySingleton(DioService.new);
 
     // Abstracted Services
     i.addInstance<StorageService>(await HiveImpl.init());
-    i.addLazySingleton<CryptoService>(FlutterSecureStorageImpl.new);
 
     // Repositories
     i.addLazySingleton(AuthRepository.new);
@@ -30,5 +36,8 @@ mixin AppInjector {
     i.addLazySingleton(ThemeRepository.new);
 
     i.commit();
+    await splash;
+
+    return _instance = i;
   }
 }

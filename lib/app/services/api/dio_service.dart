@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_declaring_const_constructors
 import 'dart:convert';
 import 'dart:developer' as dev;
 import 'package:dio/dio.dart';
@@ -13,11 +12,12 @@ import 'api_exception.dart';
 
 typedef Json = Map<String, dynamic>;
 
+// TODO(arthurbcd): make it work on tests.
 class DioService extends DioMixin {
   DioService() {
     httpClientAdapter = HttpClientAdapter();
     options = BaseOptions(
-      baseUrl: '',
+        // baseUrl: 'https://api.example.com',
     );
   }
 
