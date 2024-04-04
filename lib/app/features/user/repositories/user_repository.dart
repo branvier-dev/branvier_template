@@ -12,6 +12,6 @@ class UserRepository {
   User get cachedUser {
     if (storage.get('user') case String json) return User.fromJson(json);
 
-    throw Exception('User not found');
+    throw ArgumentError.notNull('cachedUser');
   }
 }
