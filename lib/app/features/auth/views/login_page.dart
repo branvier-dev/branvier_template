@@ -12,7 +12,8 @@ import 'register_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
-  static const path = '/login';
+  static const name = 'login';
+  static void go(BuildContext context) => context.goNamed(name);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class LoginPage extends StatelessWidget {
                           alignment: Alignment.topRight,
                           child: TextButton(
                             onPressed: () =>
-                                context.go(ForgotPasswordPage.path),
+                                ForgotPasswordPage.go(context),
                             child: const Text('Recuperar senha'),
                           ),
                         ),
@@ -72,7 +73,7 @@ class LoginPage extends StatelessWidget {
 
                             await context.read<AuthStore>().login(dto);
 
-                            if (context.mounted) context.go(HomePage.path);
+                            if (context.mounted) HomePage.go(context);
                           },
                           child: const Text('Entrar'),
                         ).asAsync(),
@@ -80,7 +81,7 @@ class LoginPage extends StatelessWidget {
                         const Gap(32),
                         // *
                         OutlinedButton(
-                          onPressed: () => context.go(RegisterPage.path),
+                          onPressed: () => RegisterPage.go(context),
                           child: const Text('Cadastrar-se'),
                         ),
                       ],

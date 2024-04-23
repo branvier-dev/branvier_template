@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../user/stores/user_store.dart';
@@ -6,9 +7,8 @@ import '../../user/stores/user_store.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  static const path = '/home';
-
-  static const index = 0;
+  static const name = 'home';
+  static void go(BuildContext context) => context.goNamed(name);
 
   @override
   Widget build(BuildContext context) {

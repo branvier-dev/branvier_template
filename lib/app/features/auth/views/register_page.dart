@@ -9,7 +9,8 @@ import '../../home/views/home_page.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
-  static const path = '/login/register';
+  static const name = 'register';
+  static void go(BuildContext context) => context.goNamed(name);
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,7 @@ class RegisterPage extends StatelessWidget {
                             // final dto = RegisterUserDto.fromMap(state.form);
                             // await context.read<AuthStore>().registerUser(dto);
 
-                            if (context.mounted) context.go(HomePage.path);
+                            if (context.mounted) HomePage.go(context);
                           },
                           child: const Text('Cadastrar'),
                         ).asAsync(),

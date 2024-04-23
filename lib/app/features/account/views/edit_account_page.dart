@@ -9,7 +9,8 @@ import 'account_page.dart';
 class EditAccountPage extends StatelessWidget {
   const EditAccountPage({super.key});
 
-  static const path = '/account/edit';
+  static const name = 'edit-account';
+  static void go(BuildContext context) => context.goNamed(name);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class EditAccountPage extends StatelessWidget {
             const Gap(100),
             OutlinedButton.icon(
               onPressed: () {
-                context.go(AccountPage.path);
+                AccountPage.go(context);
               },
               icon: const Icon(Icons.exit_to_app),
               label: const Text('Voltar'),

@@ -24,9 +24,6 @@ void main() async {
     runApp(
       MultiProvider(
         providers: [
-          // Use Cases
-
-          // Stores
           StoreProvider(create: (_) => AuthStore(i())),
           StoreProvider(create: (_) => ThemeStore(i())),
         ],

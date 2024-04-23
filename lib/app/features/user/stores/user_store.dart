@@ -7,9 +7,13 @@ class UserStore extends ChangeNotifier {
   UserStore(this.repository);
 
   final UserRepository repository;
+  // ignore: unused_field
   late User _user = repository.cachedUser;
 
-  User get user => _user;
+  User get user => const User(
+        name: 'fake name',
+        email: 'fake@email',
+      );
 
   void setUser(User user) {
     _user = user;

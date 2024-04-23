@@ -11,10 +11,9 @@ import 'features/auth/views/login_page.dart';
 import 'features/auth/views/register_page.dart';
 import 'features/home/views/home_page.dart';
 import 'features/user/stores/user_store.dart';
-import 'features/user/views/user_shell.dart';
+import 'features/user/views/home_shell.dart';
 
 mixin AppRouter {
-
   static final config = () {
     final i = AppInjector.instance;
 
@@ -23,55 +22,51 @@ mixin AppRouter {
         GoRoute(
           path: '/',
           redirect: (context, _) {
-            return context.read<AuthStore>().isLogged ? '/home' : null;
+            return context.read<AuthStore>().isLogged ? '/home' : '/login';
           },
-          builder: (_, __) => const LoginPage(),
         ),
 
         // * Auth
         GoRoute(
           path: '/login',
+          name: LoginPage.name,
           builder: (_, __) => const LoginPage(),
           routes: [
             GoRoute(
               path: 'register',
+              name: RegisterPage.name,
               builder: (_, __) => const RegisterPage(),
             ),
             GoRoute(
               path: 'forgot-password',
+              name: ForgotPasswordPage.name,
               builder: (_, __) => const ForgotPasswordPage(),
             ),
           ],
         ),
 
-        // * User
-        StatefulShellRoute.indexedStack(
-          builder: (_, __, navigationShell) => MultiProvider(
+        ShellRoute(
+          builder: (_, __, child) => MultiProvider(
             providers: [
               StoreProvider(create: (_) => UserStore(i())),
             ],
-            child: UserShell(navigationShell: navigationShell),
+            child: HomeShell(child: child),
           ),
-          branches: [
-            StatefulShellBranch(
-              routes: [
-                GoRoute(
-                  path: '/home',
-                  builder: (_, __) => const HomePage(),
-                ),
-              ],
+          routes: [
+            GoRoute(
+              path: '/home',
+              name: HomePage.name,
+              builder: (_, __) => const HomePage(),
             ),
-            StatefulShellBranch(
+            GoRoute(
+              path: '/account',
+              name: AccountPage.name,
+              builder: (_, __) => const AccountPage(),
               routes: [
                 GoRoute(
-                  path: '/account',
-                  builder: (_, __) => const AccountPage(),
-                  routes: [
-                    GoRoute(
-                      path: 'edit',
-                      builder: (_, __) => const EditAccountPage(),
-                    ),
-                  ],
+                  path: 'edit',
+                  name: EditAccountPage.name,
+                  builder: (_, __) => const EditAccountPage(),
                 ),
               ],
             ),
