@@ -4,4 +4,7 @@
 
 1. Clone the repository
 2. Run flutter create .
-3.
+
+## Useful Links
+
+[Firebase Exceptions](https://github.com/Isagani-lapira/FirebaseAuth_ErrorCode)
