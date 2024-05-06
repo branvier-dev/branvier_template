@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:formx/formx.dart';
 import 'package:provider/provider.dart';
 import 'package:tr_extension/tr_extension.dart';
 
@@ -14,6 +15,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     // Formx.disableValidatorsOnDebugMode = true;
     Animate.restartOnHotReload = true;
+    Validator.translator = (key, errorText) => '$errorText.$key'.tr;
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
