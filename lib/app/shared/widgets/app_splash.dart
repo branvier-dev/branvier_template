@@ -7,8 +7,8 @@ class AppSplash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
+    return const Directionality(
+      textDirection: TextDirection.ltr,
       home: Scaffold(
         body: Center(
           child: Text('Splash Screen'),

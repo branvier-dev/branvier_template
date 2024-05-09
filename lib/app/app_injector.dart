@@ -20,11 +20,12 @@ mixin AppInjector {
     throw Exception('You must call AppInjector.setup() before using it.');
   }
 
+  /// Injects all dependencies and returns the service [Locator].
   static Future<Locator> setup() async {
     final i = AutoInjector();
     final splash = Future.delayed(AppSplash.duration);
 
-    // services
+    // Services
     i.addLazySingleton(DioService.new);
 
     // Abstracted Services

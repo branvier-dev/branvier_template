@@ -1,7 +1,6 @@
 // ignore_for_file: unreachable_from_main
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'app/app.dart';
@@ -15,10 +14,7 @@ void main() async {
   try {
     runApp(const AppSplash());
 
-    // Setup
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-    // Dependency Injection
+    // Injector & Locator
     final i = await AppInjector.setup();
 
     runApp(
