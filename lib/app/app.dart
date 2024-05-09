@@ -38,7 +38,7 @@ class App extends StatelessWidget {
       // Overlays
       builder: (context, child) {
         return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).focusedChild?.unfocus(),
           child: child,
         );
       },
