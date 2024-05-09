@@ -10,6 +10,10 @@ mixin AppTheme {
   static ThemeData get base => ThemeData(
         textTheme: texts,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        inputDecorationTheme: const InputDecorationTheme(
+          isDense: true,
+          constraints: BoxConstraints(maxWidth: 600),
+        ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
             shape: const RoundedRectangleBorder(
@@ -42,7 +46,6 @@ mixin AppTheme {
         colorScheme: AppColors.light,
         // *
         inputDecorationTheme: base.inputDecorationTheme.copyWith(
-          isDense: true,
           border: const OutlineInputBorder(
             borderSide: BorderSide(width: 1.4),
           ),
