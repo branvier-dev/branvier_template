@@ -34,6 +34,14 @@ class App extends StatelessWidget {
 
       // Routes
       routerConfig: AppRouter.config,
+
+      // Overlays
+      builder: (context, child) {
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: child,
+        );
+      },
     );
   }
 }
