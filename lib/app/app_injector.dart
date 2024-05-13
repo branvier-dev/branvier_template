@@ -23,7 +23,6 @@ mixin AppInjector {
   /// Injects all dependencies and returns the service [Locator].
   static Future<Locator> setup() async {
     final i = AutoInjector();
-    final splash = Future.delayed(AppSplash.duration);
 
     // Services
     i.addLazySingleton(DioService.new);
@@ -37,7 +36,7 @@ mixin AppInjector {
     i.addLazySingleton(ThemeRepository.new);
 
     i.commit();
-    await splash;
+    await AppSplash.future;
 
     return _instance = i;
   }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-mixin AppColors {
-  static const light = ColorScheme.light(
-    primary: Color.fromARGB(255, 43, 99, 242),
+extension AppColors on ColorScheme {
+  static ColorScheme get light => ColorScheme.fromSeed(
+        seedColor: Colors.yellow,
   );
-  static const dark = ColorScheme.dark();
+  static ColorScheme get dark => ColorScheme.fromSeed(
+        brightness: Brightness.dark,
+        seedColor: Colors.yellow,
+      );
 }

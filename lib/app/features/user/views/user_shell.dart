@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HomeShell extends StatelessWidget {
-  const HomeShell({super.key, required this.child});
+class UserShell extends StatelessWidget {
+  const UserShell({super.key, required this.child});
   final Widget child;
 
   @override

@@ -8,7 +8,8 @@ class ThemeStore extends ChangeNotifier implements ReassembleHandler {
 
   final ThemeRepository _repository;
 
-  ThemeMode get mode => _repository.getMode();
+  // ThemeMode get mode => _repository.getMode();
+  ThemeMode get mode => ThemeMode.light;
 
   void setMode(ThemeMode value) {
     _repository.setMode(value);
