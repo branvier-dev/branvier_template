@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../main.dart';
 import 'app_injector.dart';
-import 'features/account/views/account_page.dart';
-import 'features/account/views/edit_account_page.dart';
 import 'features/auth/stores/auth_store.dart';
 import 'features/auth/views/forgot_password_page.dart';
 import 'features/auth/views/initial_page.dart';
@@ -16,7 +14,7 @@ import 'features/home/views/home_page.dart';
 import 'features/user/stores/user_store.dart';
 import 'features/user/views/user_shell.dart';
 
-mixin AppRouter {
+extension AppRouter on GoRouter {
   @protected
   static Locator get i => AppInjector.instance;
   
@@ -58,18 +56,6 @@ mixin AppRouter {
             path: '/home',
             name: HomePage.name,
             builder: (_, __) => const HomePage(),
-          ),
-          GoRoute(
-            path: '/account',
-            name: AccountPage.name,
-            builder: (_, __) => const AccountPage(),
-            routes: [
-              GoRoute(
-                path: 'edit',
-                name: EditAccountPage.name,
-                builder: (_, __) => const EditAccountPage(),
-              ),
-            ],
           ),
         ],
       ),

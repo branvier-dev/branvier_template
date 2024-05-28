@@ -87,5 +87,6 @@ extension ThemeExtension on ThemeData {
 }
 
 extension StatePropertyExtension<T> on T {
+  // ignore: deprecated_member_use
   MaterialStateProperty<T> get property => MaterialStatePropertyAll(this);
 }
