@@ -25,13 +25,13 @@ dependencies:
   #Services
   hive: ^2.2.3 #Storage
   image_picker: ^1.1.1
-  tr_extension: ^0.5.2 #Translation
+  tr_extension: ^0.6.0 #Translation
 
   #Ui
   flutter_animate: ^4.5.0
   flutter_async: ^0.8.1
   path_provider: ^2.1.3
-  formx: ^0.12.0
+  formx: ^0.12.1
   gap: ^3.0.1
 
   #Utils
@@ -49,3 +49,7 @@ flutter:
     - assets/
     - assets/translations/
   
+# dart pub global activate rps
+scripts:
+  test: flutter run -d chrome --release
+  build: flutter build web --release
