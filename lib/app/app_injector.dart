@@ -21,14 +21,14 @@ mixin AppInjector {
   }
 
   /// Injects all dependencies and returns the service [Locator].
-  static Future<Locator> setup() async {
+  static Future<Locator> setup({bool test = false}) async {
     final i = AutoInjector();
 
     // Services
     i.addLazySingleton(DioService.new);
 
     // Abstracted Services
-    i.addInstance<StorageService>(await HiveImpl.init());
+    i.addInstance(test ? StorageService() : await HiveImpl.init());
 
     // Repositories
     i.addLazySingleton(AuthRepository.new);

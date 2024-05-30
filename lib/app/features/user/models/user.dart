@@ -7,18 +7,22 @@ import 'package:flutter/foundation.dart';
 @immutable
 class User {
   const User({
+    this.id = '',
     this.name = '',
     this.email = '',
   });
 
+  final String id;
   final String name;
   final String email;
 
   User copyWith({
+    String? id,
     String? name,
     String? email,
   }) {
     return User(
+      id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
     );
@@ -26,6 +30,7 @@ class User {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'email': email,
     };
@@ -36,6 +41,7 @@ class User {
         ? map[k] as T
         : throw ArgumentError.value(map[k], k, '$T ← ${map[k].runtimeType}');
     return User(
+      id: cast<String>('id'),
       name: cast<String>('name'),
       email: cast<String>('email'),
     );
@@ -47,15 +53,18 @@ class User {
       User.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'User(name: $name, email: $email)';
+  String toString() => 'User(id: $id, name: $name, email: $email)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
-    return other is User && other.name == name && other.email == email;
+  
+    return other is User &&
+        other.id == id &&
+        other.name == name &&
+        other.email == email;
   }
 
   @override
-  int get hashCode => name.hashCode ^ email.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode ^ email.hashCode;
 }

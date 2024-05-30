@@ -1,31 +1,36 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:convert';
 import 'dart:developer' as dev;
+
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:meta/meta.dart';
+import 'package:mime/mime.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import 'api_exception.dart';
+import '../../../env.dart';
 
-typedef Json = Map<String, dynamic>;
+typedef UploadCallback = Future<String> Function(XFile xfile);
 
-// TODO(arthurbcd): make it work on tests.
 class DioService extends DioMixin {
   DioService() {
     httpClientAdapter = HttpClientAdapter();
-    options = BaseOptions(
-        // baseUrl: 'https://api.example.com',
-    );
+    options = BaseOptions(baseUrl: Env.apiUrl);
   }
 
   /// The cache options.
   final cache = CacheOptions(
     // The path is null because Hive was already initialized.
     store: HiveCacheStore(null),
-    // Each cache registry expire time.
+    policy: CachePolicy.refreshForceCache, // server first
+    hitCacheOnErrorExcept: [], // return cache on any error
     maxStale: 7.days,
   );
 
@@ -33,7 +38,12 @@ class DioService extends DioMixin {
   String? get token => options.headers['authorization'] as String?;
 
   /// Sets the authorization token.
-  set token(String? value) => options.headers['authorization'] = value;
+  set token(String? value) {
+    options.headers['authorization'] = switch (value) {
+      null => options.headers.remove('authorization'),
+      var token => 'Bearer $token',
+    };
+  }
 
   @override
   Interceptors get interceptors => Interceptors()
@@ -42,9 +52,7 @@ class DioService extends DioMixin {
       PrettyDioLogger(
         maxWidth: 50,
         requestBody: true,
-        logPrint: (o) {
-          dev.log('$o', name: 'dio');
-        },
+        logPrint: (o) => dev.log('$o', name: 'dio'),
       ),
 
       // Mock interceptor.
@@ -79,16 +87,38 @@ class DioService extends DioMixin {
             },
           );
           handler.next(response);
-          // jlog(response.data);
         },
       ),
 
       // ApiException wrapper.
       InterceptorsWrapper(
-        onError: (e, handler) => handler.next(_ApiException.from(e)),
+        onError: (e, handler) => handler.next(ApiException(e)),
       ),
     ]);
 
+  /// Upload a file to server, returns the url.
+  Future<String> upload(XFile file) async {
+    final response = await post<Map>(
+      '/uploads',
+      data: FormData.fromMap({
+        'file': MultipartFile.fromBytes(
+          await file.readAsBytes(),
+          filename: file.name,
+          contentType: switch (file.mimeType ?? lookupMimeType(file.name)) {
+            null => null,
+            var type => MediaType.parse(type),
+          },
+        ),
+      }),
+    );
+
+    if (response.data?['file'] case {'url': String url}) return url;
+    throw Exception('Falha ao fazer upload do arquivo.');
+  }
+
+  /// Extra options.
+  /// - forceCache: Always return cache, when available.
+  /// - mock: Mock the response, when in debug mode.
   Map<String, dynamic> extra({
     bool forceCache = false,
     Object? mock,
@@ -101,31 +131,13 @@ class DioService extends DioMixin {
   }
 }
 
-class _ApiException extends DioException implements ApiException {
-  _ApiException.from(DioException e)
-      : super(
-          requestOptions: e.requestOptions,
-          response: e.response,
-          type: e.type,
-          error: e.error,
-          stackTrace: e.stackTrace,
-        );
-
-  @override
-  String get message {
-    if (response?.data case {'error': String message}) return message;
-
-    return switch (type) {
-      DioExceptionType.connectionTimeout => 'null',
-      DioExceptionType.sendTimeout => 'null',
-      DioExceptionType.receiveTimeout => 'null',
-      DioExceptionType.badCertificate => 'null',
-      DioExceptionType.badResponse => 'null',
-      DioExceptionType.cancel => 'null',
-      DioExceptionType.connectionError => 'null',
-      DioExceptionType.unknown => 'null',
-    };
-  }
+extension type ApiException(DioException dio) implements DioException {
+  @redeclare
+  String get message => switch (response?.data) {
+        {'message': String message} => message,
+        {'message': List list} when list.isNotEmpty => '${list.first}',
+        _ => dio.message ?? type.name,
+      };
 }
 
 @visibleForTesting
