@@ -1,6 +1,8 @@
-// ignore_for_file: unreachable_from_main
+// ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import 'app/app.dart';
@@ -13,6 +15,10 @@ import 'app/shared/widgets/app_splash.dart';
 void main() async {
   try {
     runApp(const AppSplash());
+    usePathUrlStrategy();
+
+    // Framework
+    App.info = await PackageInfo.fromPlatform();
 
     // Injector & Locator
     final i = await AppInjector.setup();

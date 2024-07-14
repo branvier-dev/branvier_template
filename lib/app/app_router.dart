@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../main.dart';
+import 'app_analytics.dart';
 import 'app_injector.dart';
 import 'features/auth/stores/auth_store.dart';
 import 'features/auth/views/forgot_password_page.dart';
@@ -13,11 +14,10 @@ import 'features/auth/views/register_page.dart';
 import 'features/home/views/home_page.dart';
 import 'features/user/stores/user_store.dart';
 import 'features/user/views/user_shell.dart';
-
 extension AppRouter on GoRouter {
   @protected
   static Locator get i => AppInjector.instance;
-  
+
   /// The [MaterialApp.routerConfig].
   static final config = GoRouter(
     routes: [
@@ -60,5 +60,17 @@ extension AppRouter on GoRouter {
         ],
       ),
     ],
-  );
+  )..addAnalytics();
+
+  RouteMatchList get current => routerDelegate.currentConfiguration;
+
+  void addAnalytics() {
+    routerDelegate.addListener(() {
+      AppAnalytics.logScreen(
+        name: current.last.route.name,
+        path: current.fullPath,
+        parameters: current.pathParameters,
+      );
+    });
+  }
 }

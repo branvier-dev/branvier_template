@@ -1,5 +1,3 @@
-// ignore_for_file: inference_failure_on_function_invocation
-
 import 'package:auto_injector/auto_injector.dart';
 import 'package:provider/provider.dart';
 
@@ -12,17 +10,22 @@ import 'services/storage/storage_service.dart';
 import 'shared/widgets/app_splash.dart';
 
 mixin AppInjector {
-  static Locator? _instance;
+  static AutoInjector? _instance;
+  static bool _isTest = false;
+
+  /// Whether the app is running in test mode.
+  static bool get isTest => _isTest;
 
   /// The instance of [AppInjector]. Only the [Injector.get] is accessible.
   static Locator get instance {
-    if (_instance case Locator instance) return instance;
+    if (_instance case var instance?) return instance;
     throw Exception('You must call AppInjector.setup() before using it.');
   }
 
   /// Injects all dependencies and returns the service [Locator].
-  static Future<Locator> setup({bool test = false}) async {
+  static Future<AutoInjector> setup({bool test = false}) async {
     final i = AutoInjector();
+    _isTest = test;
 
     // Services
     i.addLazySingleton(DioService.new);
@@ -35,9 +38,8 @@ mixin AppInjector {
     i.addLazySingleton(UserRepository.new);
     i.addLazySingleton(ThemeRepository.new);
 
-    i.commit();
     await AppSplash.future;
 
-    return _instance = i;
+    return _instance = i..commit();
   }
 }

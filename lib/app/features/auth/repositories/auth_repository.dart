@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import '../../../services/api/dio_service.dart';
 import '../../../services/storage/storage_service.dart';
 import '../../user/models/user.dart';
@@ -13,17 +15,31 @@ class AuthRepository {
   bool get isLogged => storage.get('token') != null;
 
   Future<void> login(LoginDto dto) async {
-    // const path = '/auth/login';
+    const path = '/auth/login';
+    final data = dto.toMap();
+    final mock = {
+      'token': '123',
+      'user': {
+        'id': '1',
+        'name': 'tester',
+        ...data,
+      },
+    };
 
-    // final response = await dio.post<Map>(path, data: dto.toMap());
-    await authenticateMock(dto.toMap());
+    final response = await dio.post<Map>(
+      path,
+      data: data,
+      options: Options(extra: dio.extra(mock: mock)),
+    );
+
+    await _authenticate(response);
   }
 
-  Future<void> registerUser(RegisterUserDto dto) async {
-    // const path = '/auth/registerUser';
+  Future<void> register(RegisterUserDto dto) async {
+    const path = '/auth/register';
 
-    // final response = await dio.post<Map>(path, data: dto.toMap());
-    await authenticateMock(dto.toMap());
+    final response = await dio.post<Map>(path, data: dto.toMap());
+    await _authenticate(response);
   }
 
   Future<void> logout() async {
@@ -31,30 +47,15 @@ class AuthRepository {
     await storage.clear();
   }
 
-  /// Mocked authentication
-  Future<String> authenticateMock(Map<String, dynamic> response) async {
-    final map = {
-      ...response,
-      if (response['name'] == null) //
-        'name': 'Juan Almeida',
-    };
+  Future<String> _authenticate(Response<Map> response) async {
+    final token = response.data?['token'] as String;
+    final map = response.data?['user'] as Map;
 
     final user = User.fromMap(map.cast());
 
-    await storage.set('token', '123');
     await storage.set('user', user.toJson());
+    await storage.set('token', token);
 
-    final token = storage.get('token');
-
-    if (token != null) {
-      dio.token = token;
-
-      return token;
-    } else {
-      dio.token = '123';
-    }
-
-    // throw ArgumentError.notNull('token');
-    return '123';
+    return dio.token = token;
   }
 }

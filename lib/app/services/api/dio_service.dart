@@ -11,11 +11,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:meta/meta.dart';
 import 'package:mime/mime.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../../env.dart';
+import '../../app_injector.dart';
 
 typedef UploadCallback = Future<String> Function(XFile xfile);
 
@@ -28,7 +28,7 @@ class DioService extends DioMixin {
   /// The cache options.
   final cache = CacheOptions(
     // The path is null because Hive was already initialized.
-    store: HiveCacheStore(null),
+    store: AppInjector.isTest ? null : HiveCacheStore(null),
     policy: CachePolicy.refreshForceCache, // server first
     hitCacheOnErrorExcept: [], // return cache on any error
     maxStale: 7.days,
@@ -75,7 +75,7 @@ class DioService extends DioMixin {
       ),
 
       // Cache interceptor.
-      DioCacheInterceptor(options: cache),
+      if (!AppInjector.isTest) DioCacheInterceptor(options: cache),
       InterceptorsWrapper(
         onResponse: (response, handler) {
           dev.log(
@@ -92,7 +92,7 @@ class DioService extends DioMixin {
 
       // ApiException wrapper.
       InterceptorsWrapper(
-        onError: (e, handler) => handler.next(ApiException(e)),
+        onError: (e, handler) => handler.next(ApiException.from(e)),
       ),
     ]);
 
@@ -100,29 +100,31 @@ class DioService extends DioMixin {
   Future<String> upload(XFile file) async {
     final response = await post<Map>(
       '/uploads',
-      data: FormData.fromMap({
-        'file': MultipartFile.fromBytes(
-          await file.readAsBytes(),
-          filename: file.name,
-          contentType: switch (file.mimeType ?? lookupMimeType(file.name)) {
-            null => null,
-            var type => MediaType.parse(type),
-          },
-        ),
-      }),
+      data: await uploadData(file),
     );
 
     if (response.data?['file'] case {'url': String url}) return url;
     throw Exception('Falha ao fazer upload do arquivo.');
   }
 
+  /// Creates a FormData object from a file.
+  Future<FormData> uploadData(XFile file, {String field = 'file'}) async {
+    return FormData.fromMap({
+      field: MultipartFile.fromBytes(
+        await file.readAsBytes(),
+        filename: file.name,
+        contentType: switch (file.mimeType ?? lookupMimeType(file.name)) {
+          null => null,
+          var type => MediaType.parse(type),
+        },
+      ),
+    });
+  }
+
   /// Extra options.
   /// - forceCache: Always return cache, when available.
   /// - mock: Mock the response, when in debug mode.
-  Map<String, dynamic> extra({
-    bool forceCache = false,
-    Object? mock,
-  }) {
+  Map<String, dynamic> extra({Object? mock, bool forceCache = false}) {
     return {
       if (forceCache)
         ...cache.copyWith(policy: CachePolicy.forceCache).toExtra(),
@@ -131,12 +133,22 @@ class DioService extends DioMixin {
   }
 }
 
-extension type ApiException(DioException dio) implements DioException {
-  @redeclare
+class ApiException extends DioException {
+  ApiException.from(DioException e)
+      : super(
+          requestOptions: e.requestOptions,
+          response: e.response,
+          type: e.type,
+          error: e.error,
+          stackTrace: e.stackTrace,
+          message: e.message,
+        );
+
+  @override
   String get message => switch (response?.data) {
         {'message': String message} => message,
         {'message': List list} when list.isNotEmpty => '${list.first}',
-        _ => dio.message ?? type.name,
+        _ => super.message ?? type.name,
       };
 }
 

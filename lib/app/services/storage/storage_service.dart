@@ -1,14 +1,14 @@
 import 'dart:async';
 
 abstract class StorageService {
-  factory StorageService() => StorageServiceMock();
+  factory StorageService() => FakeStorageService();
   String? get(String key);
   Future<void> set(String key, String value);
   Future<void> remove(String key);
   Future<void> clear();
 }
 
-class StorageServiceMock implements StorageService {
+class FakeStorageService implements StorageService {
   final Map<String, String> _storage = {};
 
   @override

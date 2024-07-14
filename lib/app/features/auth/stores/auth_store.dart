@@ -16,7 +16,7 @@ class AuthStore extends ChangeNotifier {
   }
 
   Future<void> registerUser(RegisterUserDto dto) async {
-    await _repository.registerUser(dto);
+    await _repository.register(dto);
   }
 
   void logout() {
