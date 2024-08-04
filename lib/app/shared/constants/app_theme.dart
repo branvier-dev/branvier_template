@@ -12,12 +12,21 @@ extension AppTheme on ThemeData {
 }
 
 extension on ColorScheme {
-  /// Creates a [ThemeData] from this [ColorScheme].
+  /// Aqui criamos o nosso tema [ThemeData] a partir do [ColorScheme] atual,
+  /// dessa forma o mesmo tema será aplicado em ambos esquemas de cores.
+  ///
+  /// Caso precise usar uma cor de acordo com o esquema de cores, você pode
+  /// acessar as propriedades [primary], [secondary], etc, diretamente, ou use a
+  /// propriedade `isDark` e faça a lógica desejada.
+  ///
+  /// Procure centralizar as customizações dos componentes aqui primeiro. Acesse
+  /// o tema atual usando [Theme.of]. Ex: `Theme.of(context).textTheme`.
   ThemeData get theme {
     return ThemeData(
       colorScheme: this,
 
-      // General
+      // O Flutter muda os valores abaixo de acordo com a plataforma. Isso não
+      // é desejado, então definimos os valores manualmente.
       materialTapTargetSize: MaterialTapTargetSize.padded,
       visualDensity: VisualDensity.standard,
 

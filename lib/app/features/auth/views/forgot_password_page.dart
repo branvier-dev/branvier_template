@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({super.key});
+
   static const name = 'forgot-password';
   static void go(BuildContext context) => context.goNamed(name);
 
@@ -10,8 +11,8 @@ class ForgotPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: Text('Forgot Password Page'.toUpperCase()),
+      body: const Center(
+        child: Text('Forgot Password Page'),
       ),
     );
   }

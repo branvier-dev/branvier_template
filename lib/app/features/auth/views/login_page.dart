@@ -20,67 +20,64 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 360),
-              child: Form(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Login Page'.toUpperCase()),
-                    const Gap(80),
-                    TextFormField(
-                      key: const Key('email'),
-                      validator: Validator().required().email(),
-                      decoration: const InputDecoration(
-                        labelText: 'E-mail',
-                        suffixIcon: Icon(Icons.mail),
-                      ),
-                    ),
-                    const Gap(16),
-                    TextFormField(
-                      key: const Key('password'),
-                      validator: Validator()
-                          .required()
-                          .hasNumeric('Deve conter números')
-                          .minLength(6, 'Mínimo de 6 caracteres'),
-                      decoration: const InputDecoration(
-                        labelText: 'Senha',
-                        suffixIcon: Icon(Icons.lock),
-                      ),
-                    ),
-                    // *
-                    const Gap(8),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () => ForgotPasswordPage.go(context),
-                        child: const Text('Recuperar senha'),
-                      ),
-                    ),
-                    const Gap(40),
-                    FilledButton(
-                      onPressed: () async {
-                        final state = context.formx();
-                        if (!state.validate()) return;
-                        
-                        final dto = LoginDto.fromMap(state.values);
-                        await context.read<AuthStore>().login(dto);
-
-                        if (context.mounted) HomePage.go(context);
-                      },
-                      child: const Text('Entrar'),
-                    ).asAsync(),
-                    const Gap(32),
-                    OutlinedButton(
-                      onPressed: () => RegisterPage.go(context),
-                      child: const Text('Cadastrar-se'),
-                    ),
-                  ],
+        child: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          constraints: const BoxConstraints(maxWidth: 360),
+          child: Form(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Login Page'),
+                const Gap(80),
+                TextFormField(
+                  key: const Key('email'),
+                  validator: Validator().required().email(),
+                  decoration: const InputDecoration(
+                    labelText: 'E-mail',
+                    suffixIcon: Icon(Icons.mail),
+                  ),
                 ),
-              ),
+                const Gap(16),
+                TextFormField(
+                  key: const Key('password'),
+                  validator: Validator()
+                      .required()
+                      .hasNumeric('Deve conter números')
+                      .minLength(6, 'Mínimo de 6 caracteres'),
+                  decoration: const InputDecoration(
+                    labelText: 'Senha',
+                    suffixIcon: Icon(Icons.lock),
+                  ),
+                ),
+                // *
+                const Gap(8),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    onPressed: () => ForgotPasswordPage.go(context),
+                    child: const Text('Recuperar senha'),
+                  ),
+                ),
+                const Gap(40),
+                FilledButton(
+                  onPressed: () async {
+                    final state = context.formx();
+                    if (!state.validate()) return;
+
+                    final dto = LoginDto.fromMap(state.values);
+                    await context.read<AuthStore>().login(dto);
+
+                    if (context.mounted) HomePage.go(context);
+                  },
+                  child: const Text('Entrar'),
+                ).asAsync(),
+                const Gap(32),
+                OutlinedButton(
+                  onPressed: () => RegisterPage.go(context),
+                  child: const Text('Cadastrar-se'),
+                ),
+              ],
             ),
           ),
         ),

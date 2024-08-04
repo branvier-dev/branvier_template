@@ -14,18 +14,22 @@ import 'features/auth/views/register_page.dart';
 import 'features/home/views/home_page.dart';
 import 'features/user/stores/user_store.dart';
 import 'features/user/views/user_shell.dart';
-extension AppRouter on GoRouter {
-  @protected
-  static Locator get i => AppInjector.instance;
 
-  /// The [MaterialApp.routerConfig].
+extension AppRouter on GoRouter {
+  /// Aqui é onde você define as rotas da aplicação, bem como os [StoreProvider]
+  /// que devem ser providos para cada rota.
+  ///
+  /// Para atribuir um [StoreProvider] a uma rota, use [GoProviderRoute] em vez
+  /// do [GoRoute].
   static final config = GoRouter(
     routes: [
       GoRoute(
+        /// Por padrão, o [GoRouter] tentará sempre acessar a rota '/', mas caso o
+        /// usuário esteja logado, ele será redirecionado para a rota '/home'.
         path: '/',
+        redirect: (context, __) => context.isLogged ? '/home' : null,
         name: InitialPage.name,
         builder: (_, __) => const InitialPage(),
-        redirect: (c, __) => c.read<AuthStore>().isLogged ? '/home' : null,
         routes: [
           GoRoute(
             path: 'login',
@@ -47,9 +51,22 @@ extension AppRouter on GoRouter {
         ],
       ),
       ShellProviderRoute(
+        /// Aqui você pode adicionar as [StoreProvider] que podem ser acessados
+        /// quando o usuário está logado.
+        ///
+        /// Evite adicionar muitos [StoreProvider] aqui, pois elas serão semi-
+        /// globais. Prefira adicionar apenas as que são realmente acessadas em
+        /// todas as telas do usuário.
+        ///
         providers: [
           StoreProvider(create: (_) => UserStore(i())),
         ],
+
+        /// O [UserShell] é um widget que envolve todas as telas do usuário.
+        ///
+        /// Use ele para adicionar elementos que devem ser exibidos em todas as
+        /// telas do usuário, como a barra de navegação ou um menu lateral.
+        ///
         builder: (_, __, child) => UserShell(child: child),
         routes: [
           GoRoute(
@@ -62,8 +79,16 @@ extension AppRouter on GoRouter {
     ],
   )..addAnalytics();
 
+  /// Acesso rápido as dependências do [AppInjector]. Use para injetar os
+  /// repositórios necessários em cada [StoreProvider]. Ex: `UserStore(i())`.
+  @protected
+  static Locator get i => AppInjector.instance;
+
+  /// Acesso rápido as configurações da rota atual.
   RouteMatchList get current => routerDelegate.currentConfiguration;
 
+  /// Conecta o [GoRouter] com o [AppAnalytics], para que ele possa escutar as
+  /// mudanças de rota e enviar os eventos de navegação.
   void addAnalytics() {
     routerDelegate.addListener(() {
       AppAnalytics.logScreen(
@@ -73,4 +98,28 @@ extension AppRouter on GoRouter {
       );
     });
   }
+}
+
+/// Aqui adicionaremos atalhos para acessar informações das rotas e do usuário.
+///
+/// É interessante você adicionar aqui os ids das rotas, para evitar erros de
+/// digitação ao navegar entre as telas.
+///
+/// Ex:
+/// `String? get patientId => pathParameters['patientId'];`
+///
+extension AppRouterExtension on BuildContext {
+  /// Acesso rápido as configurações da rota atual.
+  ///
+  /// Caso você precise reagir a mudanças de rota ou fazer uma gerência de
+  /// estado, use o [GoRouterState.of]. Esse método irá automaticamente
+  /// atualizar o widget quando a rota mudar, assim como o [watch] faz.
+  ///
+  RouteMatchList get route => GoRouter.of(this).current;
+
+  /// Se o usuário está logado.
+  bool get isLogged => read<AuthStore>().isLogged;
+
+  /// O id do usuário logado.
+  String? get userId => read<UserStore?>()?.user.id;
 }

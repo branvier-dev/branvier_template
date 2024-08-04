@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/login_dto.dart';
-import '../models/register_user_dto.dart';
+import '../models/register_dto.dart';
 import '../repositories/auth_repository.dart';
 
 class AuthStore extends ChangeNotifier {
@@ -15,7 +15,7 @@ class AuthStore extends ChangeNotifier {
     await _repository.login(dto);
   }
 
-  Future<void> registerUser(RegisterUserDto dto) async {
+  Future<void> register(RegisterDto dto) async {
     await _repository.register(dto);
   }
 

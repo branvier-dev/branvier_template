@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 @immutable
-class RegisterUserDto {
-  const RegisterUserDto({
+class RegisterDto {
+  const RegisterDto({
     required this.name,
     required this.email,
     required this.password,
@@ -16,12 +16,12 @@ class RegisterUserDto {
   final String email;
   final String password;
 
-  RegisterUserDto copyWith({
+  RegisterDto copyWith({
     String? name,
     String? email,
     String? password,
   }) {
-    return RegisterUserDto(
+    return RegisterDto(
       name: name ?? this.name,
       email: email ?? this.email,
       password: password ?? this.password,
@@ -36,11 +36,11 @@ class RegisterUserDto {
     };
   }
 
-  factory RegisterUserDto.fromMap(Map<String, dynamic> map) {
+  factory RegisterDto.fromMap(Map<String, dynamic> map) {
     T cast<T>(String k) => map[k] is T
         ? map[k] as T
         : throw ArgumentError.value(map[k], k, '$T ← ${map[k].runtimeType}');
-    return RegisterUserDto(
+    return RegisterDto(
       name: cast<String>('name'),
       email: cast<String>('email'),
       password: cast<String>('password'),
@@ -49,8 +49,8 @@ class RegisterUserDto {
 
   String toJson() => json.encode(toMap());
 
-  factory RegisterUserDto.fromJson(String source) =>
-      RegisterUserDto.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory RegisterDto.fromJson(String source) =>
+      RegisterDto.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>
@@ -60,7 +60,7 @@ class RegisterUserDto {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is RegisterUserDto &&
+    return other is RegisterDto &&
         other.name == name &&
         other.email == email &&
         other.password == password;
