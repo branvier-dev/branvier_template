@@ -1,5 +1,5 @@
-// ignore_for_file: boolean_prefixes, avoid_mutable_global_variables
 import 'package:auto_injector/auto_injector.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'features/auth/repositories/auth_repository.dart';
@@ -13,18 +13,18 @@ import 'shared/widgets/app_splash.dart';
 bool get kIsTest => _test;
 bool _test = false;
 
-mixin AppInjector {
-  static AutoInjector? _instance;
+extension AppInjector on BuildContext {
+  @visibleForTesting
+  static var i = AutoInjector();
 
-  /// The instance of [AppInjector]. Only [Injector.get] is accessible.
-  static Locator get instance {
-    if (_instance case var instance?) return instance;
-    throw Exception('You must call AppInjector.setup() before using it.');
-  }
+  // Atalho para chamar os repositórios pelo `context`.
+  // Ex: `context<AuthRepository>()` ou simplesmente `i()`.
+  T call<T>() => i();
 
   /// Injects all dependencies and returns the service [Locator].
   static Future<Locator> setup({bool test = false}) async {
-    final i = AutoInjector();
+    i = AutoInjector();
+    _test = test;
 
     // Services
     i.addLazySingleton(DioService.new);
@@ -40,6 +40,6 @@ mixin AppInjector {
 
     await AppSplash.future;
 
-    return _instance = i..commit();
+    return i..commit();
   }
 }

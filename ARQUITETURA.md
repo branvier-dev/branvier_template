@@ -7,11 +7,11 @@
   - /app
     - /features
       - /feature
-        - /models
-        - /repositories
-        - /stores
-        - /views
-        - /widgets
+        - /models (data models)
+        - /repositories (data management)
+        - /stores (state management)
+        - /views (pages, dialogs, bottom sheets)
+        - /widgets (business logic components)
     - /services
       - /service
     - /shared
@@ -35,9 +35,10 @@ O aplicativo é dividido em camadas, onde cada uma tem uma responsabilidade espe
 
 > Lógica de negócio: é a lógica que é específica da aplicação (`repositories`, `stores`, por exemplo, todo app vai ter o entidades diferentes, modelos, tabelas, etc, isso são os negócios de cada app). Um componente de negócio deve ser colocado em `/features` (ex `BookButton`, `BookCard`). Um componente genérico deve ser colocado em `/shared` (ex `AppButton`, `AppDrawer`) e não deve depender de nenhuma feature específica ou de um modelo específico. (normalmente usando flutter puro e não possuindo quase nenhum outro import).
 
+- **Model**: Representação de uma entidade. Ex: `User`, `Product`.
+
 ### Camadas
 
-- **Model**: Representação de uma entidade. Ex: `User`, `Product`.
 - **Service**: Abstração de uma fonte de dados. Ex: `CacheService`, `DioService`.
 - **Repository**: Gerenciamento da fonte de dados. Ex: `UserRepository`, `ProductRepository`.
 - **Store**: Gerenciamento do estado da aplicação. Ex: `UserStore`, `ProductStore`.
@@ -140,7 +141,6 @@ A Store é responsável por gerenciar o estado da aplicação. Ela é a única c
 A Store depende do Repository para acessar os dados e de extender o `ChangeNotifier` para notificar os widgets que o estado foi alterado.
 
 ```dart
-
 class BookStore extends ChangeNotifier {
   BookStore(this.repository) {
     // Todo construtor pode ter um método para inicializar algo junto com ele.
@@ -151,15 +151,19 @@ class BookStore extends ChangeNotifier {
 
   // Variáveis de estado privadas, pois só podem ser alteradas aqui.
   var _books = <Book>[];
+  var _loading = true;
   
   // Usamos um getter para expor o estado. Permitindo apenas a leitura e não a alteração.
   List<Book> get books => _books;
+
+  // Podemos usar um getter para expor o estado de loading.
+  bool get isLoading => _loading;
   
   // Sempre `Future<void>` ou `void` ao invés de `Future<List<Book>>`, pois 
   // nossa fonte de verdade deve ser o getter `books`.
   Future<void> getBooks() async {
     _books = await _repository.getBooks();
-
+    _loading = false;
     // chamamos notifyListeners() para notificar os widgets que estão escutando as mudanças devem ser reconstruídos.
     notifyListeners();
   }
@@ -182,8 +186,11 @@ No arquivo `app_router.dart`, escolha qual parte da árvore de rota você quer a
 ```
 
 Para facilitar o acesso ao repositórios registrados no `auto_injector`, usamos o atalho `i`:
+
 ```dart
-  static Locator get i => AppInjector.instance;
+extension on BuildContext {
+   T call() => i<T>();
+}
 ```
 
 Agora na view, usamos o package `provider` para finalmente acessar e escutar o estado.
@@ -196,6 +203,11 @@ Widget build(BuildContext context) {
   // você sempre usa o .watch quando for ler um estado, mas se apenas for 
   // apenas chamar um método da stora, use o .read.
   final books = context.watch<BookStore>().books;
+  final isLoading = context.watch<BookStore>().isLoading;
+
+  if (isLoading) {
+    return Center(child: CircularProgressIndicator());
+  }
 
   return Scaffold(
     body: Column(
@@ -241,7 +253,7 @@ Os widgets são responsáveis por exibir uma parte da interface com o usuário.
 
 ```dart
 class ThemeButton extends StatelessWidget {
-  ThemeButton({super.key});
+  const ThemeButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -258,6 +270,28 @@ class ThemeButton extends StatelessWidget {
   }
 }
 ```
+
+Componentes de négocio devem depender apenas de sua entidade de negócio e não de outras features. Por exemplo, um `BookCard` deve depender apenas de um `Book`, e não de um `User`.
+
+```dart
+class BookCard extends StatelessWidget {
+  const BookCard({required this.book, super.key});
+  final Book book;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          Text(book.title),
+          Text(book.author),
+        ],
+      ),
+    );
+  }
+}
+```
+
 
 ## Translation
 

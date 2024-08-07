@@ -59,7 +59,7 @@ extension AppRouter on GoRouter {
         /// todas as telas do usuário.
         ///
         providers: [
-          StoreProvider(create: (_) => UserStore(i())),
+          StoreProvider(create: (i) => UserStore(i())),
         ],
 
         /// O [UserShell] é um widget que envolve todas as telas do usuário.
@@ -78,11 +78,6 @@ extension AppRouter on GoRouter {
       ),
     ],
   )..addAnalytics();
-
-  /// Acesso rápido as dependências do [AppInjector]. Use para injetar os
-  /// repositórios necessários em cada [StoreProvider]. Ex: `UserStore(i())`.
-  @protected
-  static Locator get i => AppInjector.instance;
 
   /// Acesso rápido as configurações da rota atual.
   RouteMatchList get current => routerDelegate.currentConfiguration;

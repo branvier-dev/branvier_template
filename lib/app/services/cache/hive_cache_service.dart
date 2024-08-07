@@ -19,7 +19,7 @@ class HiveCacheService implements CacheService {
     // Hive must only be initialized once. Others must use `Hive.init(null)`
     Hive.init(path);
 
-    final box = await Hive.openBox<String>('storage');
+    final box = await Hive.openBox<String>('cache');
 
     return HiveCacheService(box);
   }

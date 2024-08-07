@@ -35,26 +35,28 @@ class DioService extends DioMixin {
     };
   }
 
-  /// Upload a file to server, returns the url.
-  Future<String> upload(XFile file) async {
+  /// Atalho para realizar upload de arquivos.
+  /// Atualize o path, key e o retorno do arquivo de acordo com a API.
+  Future<String> upload(
+    XFile file, {
+    String path = '/uploads',
+    String key = 'file',
+  }) async {
     final response = await post<Map>(
-      '/uploads',
-      data: await uploadData(file),
+      path,
+      data: FormData.fromMap({
+        key: MultipartFile.fromBytes(
+          await file.readAsBytes(),
+          filename: file.name,
+          contentType: MediaType.parse(
+            file.mimeType ?? lookupMimeType(file.name)!,
+          ),
+        ),
+      }),
     );
 
     if (response.data?['file'] case {'url': String url}) return url;
     throw Exception('Falha ao fazer upload do arquivo.');
-  }
-
-  /// Creates a FormData object from a file.
-  Future<FormData> uploadData(XFile file, {String key = 'file'}) async {
-    return FormData.fromMap({
-      key: MultipartFile.fromBytes(
-        await file.readAsBytes(),
-        filename: file.name,
-        contentType: file.mediaType,
-      ),
-    });
   }
 
   /// Extra options.
@@ -77,8 +79,4 @@ Future<String> jlog(Object? object) async {
   await Clipboard.setData(ClipboardData(text: json));
 
   return json;
-}
-
-extension on XFile {
-  MediaType get mediaType => MediaType.parse(mimeType ?? lookupMimeType(name)!);
 }
