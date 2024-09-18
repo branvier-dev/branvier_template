@@ -10,7 +10,7 @@ void main() {
     // You can use the DioMock class to mock the DioService.
     // i.replaceInstance<DioService>(DioMock());
 
-    final store = AuthStore(i());
+    final store = AuthStore(i(), i());
 
     expect(store.isLogged, false);
 

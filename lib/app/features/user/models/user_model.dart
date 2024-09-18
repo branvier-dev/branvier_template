@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 @immutable
-class User {
-  const User({
+class UserModel {
+  const UserModel({
     this.id = '',
     this.name = '',
     this.email = '',
@@ -16,12 +16,12 @@ class User {
   final String name;
   final String email;
 
-  User copyWith({
+  UserModel copyWith({
     String? id,
     String? name,
     String? email,
   }) {
-    return User(
+    return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
@@ -36,11 +36,11 @@ class User {
     };
   }
 
-  factory User.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromMap(Map<String, dynamic> map) {
     T cast<T>(String k) => map[k] is T
         ? map[k] as T
         : throw ArgumentError.value(map[k], k, '$T ← ${map[k].runtimeType}');
-    return User(
+    return UserModel(
       id: cast<String>('id'),
       name: cast<String>('name'),
       email: cast<String>('email'),
@@ -49,8 +49,8 @@ class User {
 
   String toJson() => json.encode(toMap());
 
-  factory User.fromJson(String source) =>
-      User.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'User(id: $id, name: $name, email: $email)';
@@ -58,8 +58,8 @@ class User {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return other is User &&
+
+    return other is UserModel &&
         other.id == id &&
         other.name == name &&
         other.email == email;

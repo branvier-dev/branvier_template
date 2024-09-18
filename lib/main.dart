@@ -35,7 +35,7 @@ void main() async {
         /// isso, use o [StoreProvider] no `app_router.dart`.
         ///
         providers: [
-          StoreProvider(create: (_) => AuthStore(i())),
+          StoreProvider(create: (_) => AuthStore(i(), i())),
         ],
         child: const App(),
       ),

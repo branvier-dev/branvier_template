@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../extensions/theme_extension.dart';
 import 'app_colors.dart';
 
 extension AppTheme on ThemeData {
@@ -38,6 +37,6 @@ extension on ColorScheme {
         isDense: true,
         constraints: BoxConstraints(maxWidth: 600),
       ),
-    ).withRadius(8.0);
+    );
   }
 }

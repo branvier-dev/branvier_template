@@ -11,8 +11,8 @@ import 'features/auth/views/forgot_password_page.dart';
 import 'features/auth/views/initial_page.dart';
 import 'features/auth/views/login_page.dart';
 import 'features/auth/views/register_page.dart';
-import 'features/home/views/home_page.dart';
 import 'features/user/stores/user_store.dart';
+import 'features/user/views/home_page.dart';
 import 'features/user/views/user_shell.dart';
 
 extension AppRouter on GoRouter {
@@ -27,7 +27,10 @@ extension AppRouter on GoRouter {
         /// Por padrão, o [GoRouter] tentará sempre acessar a rota '/', mas caso o
         /// usuário esteja logado, ele será redirecionado para a rota '/home'.
         path: '/',
-        redirect: (context, __) => context.isLogged ? '/home' : null,
+        redirect: (context, __) async {
+          final isLogged = await context.read<AuthStore>().check();
+          return isLogged ? '/home' : null;
+        },
         name: InitialPage.name,
         builder: (_, __) => const InitialPage(),
         routes: [
@@ -95,14 +98,6 @@ extension AppRouter on GoRouter {
   }
 }
 
-/// Aqui adicionaremos atalhos para acessar informações das rotas e do usuário.
-///
-/// É interessante você adicionar aqui os ids das rotas, para evitar erros de
-/// digitação ao navegar entre as telas.
-///
-/// Ex:
-/// `String? get patientId => pathParameters['patientId'];`
-///
 extension AppRouterExtension on BuildContext {
   /// Acesso rápido as configurações da rota atual.
   ///
@@ -112,9 +107,10 @@ extension AppRouterExtension on BuildContext {
   ///
   RouteMatchList get route => GoRouter.of(this).current;
 
-  /// Se o usuário está logado.
-  bool get isLogged => read<AuthStore>().isLogged;
-
-  /// O id do usuário logado.
+  /// Id do usuário logado.
   String? get userId => read<UserStore?>()?.user.id;
+
+  // Adicione aqui ids de outras rotas/entitidades:
+  //
+  String? get exampleId => route.pathParameters['exampleId'];
 }

@@ -1,8 +1,6 @@
-import 'package:dio/dio.dart';
-
 import '../../../services/api/dio_service.dart';
 import '../../../services/cache/cache_service.dart';
-import '../../user/models/user.dart';
+import '../../user/models/user_model.dart';
 import '../models/login_dto.dart';
 import '../models/register_dto.dart';
 
@@ -12,34 +10,30 @@ class AuthRepository {
   final CacheService cache;
   final DioService dio;
 
-  bool get isLogged => cache.get('token') != null;
+  bool get isLogged => (dio.token = cache.get('token')) != null;
 
-  Future<void> login(LoginDto dto) async {
-    const path = '/auth/login';
-    final data = dto.toMap();
-    final mock = _mock(data);
+  Future<UserModel?> check() async {
+    if (!isLogged) return null;
 
-    // Use `dio.extra` para marcar a requisição como mock.
-    // Assim o response.data será simulado e não será feita uma requisição real.
-    final response = await dio.post<Map>(
-      path,
-      data: data,
-      options: Options(extra: dio.extra(mock: mock)),
-    );
-    await _authenticate(response);
+    // final response = await dio.get<Map>('/auth/check');
+    return _authenticate(_mock({}));
   }
 
-  Future<void> register(RegisterDto dto) async {
+  Future<UserModel> login(LoginDto dto) async {
+    const path = '/auth/login';
+    final data = dto.toMap();
+
+    // final response = await dio.post<Map>(path, data: data);
+    return _authenticate(_mock(data));
+  }
+
+  Future<UserModel> register(RegisterDto dto) async {
     const path = '/auth/register';
     final data = dto.toMap();
-    final mock = _mock(data);
 
-    final response = await dio.post<Map>(
-      path,
-      data: data,
-      options: Options(extra: dio.extra(mock: mock)),
-    );
-    await _authenticate(response);
+    // final response = await dio.post<Map>(path, data: data);
+
+    return _authenticate(_mock(data));
   }
 
   // Ao realizar o logout, o token e o usuário são removidos do cache.
@@ -48,25 +42,22 @@ class AuthRepository {
     await cache.clear();
   }
 
-  /// Ao realizar o login ou registro, o token e o usuário são
-  /// armazenados no cache.
-  ///
-  /// Assim, o token é automaticamente enviado nas próximas requisições, e
-  /// o backend poderá identificar se o usuário está logado.
+  /// O token é setado para automaticamente ser enviado nas próximas requisições
+  /// , assim o backend poderá identificar se o usuário está logado.
   ///
   /// O token é armazenado no cache para que o usuário não precise fazer login
   /// toda vez que abrir o app.
   ///
-  Future<String> _authenticate(Response<Map> response) async {
-    final token = response.data?['token'] as String;
-    final map = response.data?['user'] as Map;
+  Future<UserModel> _authenticate(Map data) async {
+    final token = data['token'] as String;
+    final map = data['user'] as Map;
 
-    final user = User.fromMap(map.cast());
+    final user = UserModel.fromMap(map.cast());
 
-    await cache.set('user', user.toJson());
     await cache.set('token', token);
+    dio.token = token;
 
-    return dio.token = token;
+    return user;
   }
 
   /// Simula a resposta do backend.

@@ -7,7 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../home/views/home_page.dart';
+import '../../user/views/home_page.dart';
 import '../models/register_dto.dart';
 import '../stores/auth_store.dart';
 

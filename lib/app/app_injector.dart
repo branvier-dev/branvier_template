@@ -6,7 +6,7 @@ import 'features/auth/repositories/auth_repository.dart';
 import 'features/user/repositories/user_repository.dart';
 import 'services/api/dio_service.dart';
 import 'services/cache/cache_service.dart';
-import 'services/cache/hive_cache_service.dart';
+import 'services/cache/shared_cache_service.dart';
 import 'shared/widgets/app_splash.dart';
 
 /// Whether the app is running in test mode.
@@ -26,13 +26,13 @@ extension AppInjector on BuildContext {
     i = AutoInjector();
     _test = test;
 
-    // Services
-    i.addLazySingleton(DioService.new);
-
     // Abstracted Services
     i.addInstance<CacheService>(
-      kIsTest ? FakeCacheService() : await HiveCacheService.init(),
+      kIsTest ? FakeCacheService() : await SharedCacheService.init(),
     );
+
+    // Services
+    i.addLazySingleton(DioService.new);
 
     // Repositories
     i.addLazySingleton(AuthRepository.new);

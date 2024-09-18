@@ -3,26 +3,25 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../../env.dart';
-import 'dio_interceptors.dart';
-
-typedef UploadCallback = Future<String> Function(XFile xfile);
+import 'api_exception.dart';
 
 class DioService extends DioMixin {
   DioService() {
-    httpClientAdapter = HttpClientAdapter();
     options = BaseOptions(baseUrl: Env.apiUrl);
+    httpClientAdapter = HttpClientAdapter();
+    interceptors.addAll([
+      PrettyDioLogger(),
+      InterceptorsWrapper(onError: (e, h) => h.next(ApiException.from(e))),
+    ]);
   }
-
-  @override
-  final DioInterceptors interceptors = DioInterceptors();
 
   /// Gets the authorization token.
   String? get token => options.headers['authorization'] as String?;
@@ -58,20 +57,9 @@ class DioService extends DioMixin {
     if (response.data?['file'] case {'url': String url}) return url;
     throw Exception('Falha ao fazer upload do arquivo.');
   }
-
-  /// Extra options.
-  /// - forceCache: Always return cache, when available.
-  /// - mock: Mock the response, when in debug mode.
-  Map<String, dynamic> extra({Object? mock, bool forceCache = false}) {
-    return {
-      if (forceCache)
-        ...interceptors.cache
-            .copyWith(policy: CachePolicy.forceCache)
-            .toExtra(),
-      if (kDebugMode) ...{'@mock@': mock},
-    };
-  }
 }
+
+typedef UploadCallback = Future<String> Function(XFile xfile);
 
 @visibleForTesting
 Future<String> jlog(Object? object) async {
