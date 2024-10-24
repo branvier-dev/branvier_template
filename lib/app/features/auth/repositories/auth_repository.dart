@@ -20,7 +20,7 @@ class AuthRepository {
   }
 
   Future<UserModel> login(LoginDto dto) async {
-    const path = '/auth/login';
+    // const path = '/auth/login';
     final data = dto.toMap();
 
     // final response = await dio.post<Map>(path, data: data);
@@ -28,7 +28,7 @@ class AuthRepository {
   }
 
   Future<UserModel> register(RegisterDto dto) async {
-    const path = '/auth/register';
+    // const path = '/auth/register';
     final data = dto.toMap();
 
     // final response = await dio.post<Map>(path, data: data);

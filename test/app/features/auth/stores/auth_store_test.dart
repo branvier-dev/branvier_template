@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('AuthStore', () async {
-    final i = await AppInjector.setup(test: true);
+    final i = await AppInjector.init(test: true);
 
     // You can use the DioMock class to mock the DioService.
     // i.replaceInstance<DioService>(DioMock());

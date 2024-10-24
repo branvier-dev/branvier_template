@@ -1,6 +1,6 @@
 name: branvier_template
 description: A new Branvier project.
-version: 0.5.1
+version: 0.6.0
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -12,8 +12,8 @@ dependencies:
   #Core
   auto_injector: ^2.0.5
   provider: ^6.1.2
-  go_router: ^14.2.7
-  go_provider: ^1.6.0
+  go_router: ^14.3.0
+  go_provider: ^1.6.1
 
   #Http
   dio: ^5.7.0
@@ -26,13 +26,13 @@ dependencies:
 
   #Ui
   flutter_animate: ^4.5.0
-  flutter_async: ^0.10.1
-  formx: ^0.17.1
+  flutter_async: ^0.10.2
+  formx: ^0.20.1
   gap: ^3.0.1
 
   #Utils
   dartx: ^1.2.0
-  package_info_plus: ^8.0.2
+  package_info_plus: ^8.1.0
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +47,7 @@ flutter:
     - assets/translations/
   
 # dart pub global activate rps
+# --dart-define-from-file=lib/env.json
 scripts:
-  test: flutter run -d chrome --release --dart-define-from-file=lib/env.json
-  build: flutter build web --release --dart-define-from-file=lib/env.json
+  test: flutter run -d chrome --wasm
+  build: flutter build web --wasm

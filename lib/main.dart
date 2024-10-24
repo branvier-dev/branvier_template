@@ -1,27 +1,25 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import 'app/app.dart';
 import 'app/app_injector.dart';
+import 'app/app_setup.dart';
 import 'app/features/auth/stores/auth_store.dart';
 import 'app/shared/widgets/app_error.dart';
 import 'app/shared/widgets/app_splash.dart';
 
 void main() async {
   try {
-    // Mostramos o splash screen enquanto carregamos as dependências.
+    // Mostramos a splash enquanto carregamos as dependências.
     runApp(const AppSplash());
-    usePathUrlStrategy();
 
-    // Carregamos as informações do app, como versão e build number.
-    App.info = await PackageInfo.fromPlatform();
+    // Inicializamos as dependências do app.
+    await AppInjector.init();
 
-    // Carregamos as dependências do app.
-    final i = await AppInjector.setup();
+    // Inicializamos as configurações do app.
+    await AppSetup.init();
 
     runApp(
       MultiProvider(
@@ -35,7 +33,7 @@ void main() async {
         /// isso, use o [StoreProvider] no `app_router.dart`.
         ///
         providers: [
-          StoreProvider(create: (_) => AuthStore(i(), i())),
+          StoreProvider(create: (i) => AuthStore(i(), i())),
         ],
         child: const App(),
       ),

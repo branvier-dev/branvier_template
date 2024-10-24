@@ -22,7 +22,7 @@ extension AppInjector on BuildContext {
   T call<T>() => i();
 
   /// Injects all dependencies and returns the service [Locator].
-  static Future<Locator> setup({bool test = false}) async {
+  static Future<Locator> init({bool test = false}) async {
     i = AutoInjector();
     _test = test;
 
