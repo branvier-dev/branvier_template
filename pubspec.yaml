@@ -1,6 +1,6 @@
 name: branvier_template
 description: A new Branvier project.
-version: 0.6.0
+version: 0.6.1
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -12,7 +12,7 @@ dependencies:
   #Core
   auto_injector: ^2.0.5
   provider: ^6.1.2
-  go_router: ^14.3.0
+  go_router: ^14.6.0
   go_provider: ^1.6.1
 
   #Http
@@ -21,18 +21,18 @@ dependencies:
 
   #Services
   image_picker: ^1.1.2
-  tr_extension: ^0.6.1  #Translation
-  shared_preferences: ^2.3.2 #Cache
+  tr_extension: ^0.7.0
+  shared_preferences: ^2.3.3
 
   #Ui
   flutter_animate: ^4.5.0
   flutter_async: ^0.10.2
-  formx: ^0.20.1
+  formx: ^0.27.0
   gap: ^3.0.1
 
   #Utils
   dartx: ^1.2.0
-  package_info_plus: ^8.1.0
+  package_info_plus: ^8.1.1
 
 dev_dependencies:
   flutter_test:

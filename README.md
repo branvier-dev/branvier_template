@@ -12,8 +12,8 @@
 [Web - CORS for Firebase Storage](https://stackoverflow.com/questions/65849071/flutter-firebase-storage-cors-issue):
 - https://console.cloud.google.com/welcome?project=satiro-84d18 & open dashboard/cloud shell terminal.
 - echo '[{"origin": ["*"],"responseHeader": ["Content-Type"],"method": ["GET", "HEAD"],"maxAgeSeconds": 3600}]' > cors-config.json
-- gsutil cors set cors-config.json gs://<your-cloud-storage-bucket>.appspot.com
-https://console.firebase.google.com/u/0/project/biart-3a359/storage/biart-3a359.appspot.com/files
+- gsutil cors set cors-config.json gs://biart-3a359.appspot.com
+
 
 
 ## MacOS Configuration

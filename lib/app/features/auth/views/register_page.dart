@@ -61,7 +61,8 @@ class RegisterPage extends StatelessWidget {
                 const Gap(32),
                 FilledButton(
                   onPressed: () async {
-                    final dto = RegisterDto.fromMap.of(context);
+                    final map = context.submit();
+                    final dto = RegisterDto.fromMap(map);
                     await context.read<AuthStore>().register(dto);
 
                     if (context.mounted) HomePage.go(context);

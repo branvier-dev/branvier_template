@@ -27,10 +27,13 @@ extension AppSetup on BuildContext {
     // formx
     Validator.translator = (key, errorText) => '$errorText.$key'.tr;
     Formx.setup = FormxSetup(
-      filePicker: (_) => ImagePicker().pickImage(source: ImageSource.gallery),
-      filesPicker: (_) => ImagePicker().pickMultiImage(),
+      imagePicker: (_) => ImagePicker().pickImage(source: ImageSource.gallery),
+      imagesPicker: (_) => ImagePicker().pickMultiImage(),
       //fileDeleter: (url) => FirebaseStorage.instance.refFromURL(url).delete(),
-      //fileUploader: (file, path) => FirebaseStorage.instance.ref(path).putFile(file),
+      // fileUploader: (file, path) async => FirebaseStorage.instance
+      //     .ref(path)
+      //     .putString(await file.readAsString())
+      //     .then((e) => e.ref.getDownloadURL()),
     );
   }
 }

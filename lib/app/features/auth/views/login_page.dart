@@ -62,7 +62,8 @@ class LoginPage extends StatelessWidget {
                 const Gap(40),
                 FilledButton(
                   onPressed: () async {
-                    final dto = LoginDto.fromMap.of(context);
+                    final map = context.submit();
+                    final dto = LoginDto.fromMap(map);
                     await context.read<AuthStore>().login(dto);
 
                     if (context.mounted) HomePage.go(context);
