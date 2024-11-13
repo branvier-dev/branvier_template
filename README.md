@@ -14,8 +14,6 @@
 - echo '[{"origin": ["*"],"responseHeader": ["Content-Type"],"method": ["GET", "HEAD"],"maxAgeSeconds": 3600}]' > cors-config.json
 - gsutil cors set cors-config.json gs://biart-3a359.appspot.com
 
-
-
 ## MacOS Configuration
 
 - DebugProfile.entitlements:
