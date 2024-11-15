@@ -7,12 +7,27 @@
 
 ## Useful Links
 
-[Firebase Exceptions](https://github.com/Isagani-lapira/FirebaseAuth_ErrorCode)
-[Mac Configuration](https://github.com/iransneto/my-setup/blob/main/README.md)
-[Web - CORS for Firebase Storage](https://stackoverflow.com/questions/65849071/flutter-firebase-storage-cors-issue):
-- https://console.cloud.google.com/welcome?project=satiro-84d18 & open dashboard/cloud shell terminal.
-- echo '[{"origin": ["*"],"responseHeader": ["Content-Type"],"method": ["GET", "HEAD"],"maxAgeSeconds": 3600}]' > cors-config.json
-- gsutil cors set cors-config.json gs://biart-3a359.appspot.com
+### [Firebase Exceptions](https://github.com/Isagani-lapira/FirebaseAuth_ErrorCode)
+### [Mac Configuration](https://github.com/iransneto/my-setup/blob/main/README.md)
+### [Web - CORS for Firebase Storage](https://stackoverflow.com/questions/65849071/flutter-firebase-storage-cors-issue):
+https://console.cloud.google.com/welcome?project=satiro-84d18 & open dashboard/cloud shell terminal.
+
+> echo '[{"origin": ["*"],"responseHeader": ["Content-Type"],"method": ["GET", "HEAD"],"maxAgeSeconds": 3600}]' > cors-config.json
+
+> gsutil cors set cors-config.json gs://biart-3a359.appspot.com
+
+## Firebase Functions
+Existem duas formas de usar endpoints no Functions.
+> onRequest: Para endpoints que possam ser usados por qualquer cliente.
+> onCall: Para endpoints que só podem ser usados pelo cloud_functions do Flutter.
+
+No onRequest, você usaria o dio, por exemplo, para fazer a requisição.
+No onCall, você usaria o cloud_functions do Flutter.
+
+Obs: onRequest não tem segurança, precisa configurar CORS e headers manualmente.
+Obs2: onCall precisa de autenticação do GCP:
+https://console.cloud.google.com/run?project=omnistay-6bd31
+> select > Permissions > Add Principal > allUsers > Role > Cloud Run Invoker > Save
 
 ## MacOS Configuration
 
