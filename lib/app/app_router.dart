@@ -6,29 +6,26 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 import 'app_analytics.dart';
 import 'app_injector.dart';
-import 'features/auth/stores/auth_store.dart';
+import 'features/auth/view_models/auth_view_model.dart';
 import 'features/auth/views/forgot_password_page.dart';
 import 'features/auth/views/initial_page.dart';
 import 'features/auth/views/login_page.dart';
 import 'features/auth/views/register_page.dart';
-import 'features/user/stores/user_store.dart';
+import 'features/user/view_models/user_view_model.dart';
 import 'features/user/views/home_page.dart';
 import 'features/user/views/user_shell.dart';
 
 extension AppRouter on GoRouter {
-  /// Aqui é onde você define as rotas da aplicação, bem como os [StoreProvider]
-  /// que devem ser providos para cada rota.
-  ///
-  /// Para atribuir um [StoreProvider] a uma rota, use [GoProviderRoute] em vez
-  /// do [GoRoute].
+  /// Define as rotas da aplicação e [ViewModelProvider] para cada rota.
+  /// Use [GoProviderRoute] em vez de [GoRoute] para por um [ViewModelProvider].
   static final config = GoRouter(
     routes: [
       GoRoute(
-        /// Por padrão, o [GoRouter] tentará sempre acessar a rota '/', mas caso o
-        /// usuário esteja logado, ele será redirecionado para a rota '/home'.
+        /// Por padrão, o [GoRouter] tentará sempre acessar a rota '/'.
+        /// Caso o usuário esteja logado, será redirecionado para a rota '/home'.
         path: '/',
         redirect: (context, __) async {
-          final isLogged = await context.read<AuthStore>().check();
+          final isLogged = await context.read<AuthViewModel>().check();
           return isLogged ? '/home' : null;
         },
         name: InitialPage.name,
@@ -54,22 +51,13 @@ extension AppRouter on GoRouter {
         ],
       ),
       ShellProviderRoute(
-        /// Aqui você pode adicionar as [StoreProvider] que podem ser acessados
-        /// quando o usuário está logado.
-        ///
-        /// Evite adicionar muitos [StoreProvider] aqui, pois elas serão semi-
-        /// globais. Prefira adicionar apenas as que são realmente acessadas em
-        /// todas as telas do usuário.
-        ///
+        /// Adicione providers acessíveis apenas para as rotas filhas.
         providers: [
-          StoreProvider(create: (i) => UserStore(i())),
+          ViewModelProvider(create: (i) => UserViewModel(i())),
         ],
 
-        /// O [UserShell] é um widget que envolve todas as telas do usuário.
-        ///
-        /// Use ele para adicionar elementos que devem ser exibidos em todas as
-        /// telas do usuário, como a barra de navegação ou um menu lateral.
-        ///
+        /// O [UserShell] envolve todas as telas filhas, adicionando elementos
+        /// como barra de navegação ou menu lateral. Ficarão sempre visíveis.
         builder: (_, __, child) => UserShell(child: child),
         routes: [
           GoRoute(
@@ -108,7 +96,7 @@ extension AppRouterExtension on BuildContext {
   RouteMatchList get route => GoRouter.of(this).current;
 
   /// Id do usuário logado.
-  String? get userId => read<UserStore?>()?.user.id;
+  String? get userId => read<UserViewModel?>()?.user.id;
 
   // Adicione aqui ids de outras rotas/entitidades:
   //

@@ -1,9 +1,10 @@
 name: branvier_template
 description: A new Branvier project.
-version: 0.6.2
+version: 1.0.0
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: ">=3.6.0 <4.0.0"
+  flutter: ">=3.27.0"
 
 dependencies:
   flutter:
@@ -12,25 +13,26 @@ dependencies:
   #Core
   auto_injector: ^2.0.5
   provider: ^6.1.2
-  go_router: ^14.6.0
-  go_provider: ^1.7.0
+  go_router: ^14.6.2
+  go_provider: ^1.8.0
 
   #Http
   dio: ^5.7.0
   pretty_dio_logger: ^1.4.0
 
   #Services
-  tr_extension: ^0.7.0
+  tr_extension: ^0.7.1
+  image_picker: ^1.1.2
   shared_preferences: ^2.3.3
 
   #Ui
-  flutter_animate: ^4.5.0
-  flutter_async: ^0.10.2
-  formx: ^0.27.0
+  flutter_animate: ^4.5.2
+  flutter_async: ^0.11.1
+  formx: ^0.29.2
   gap: ^3.0.1
 
   #Utils
-  package_info_plus: ^8.1.1
+  package_info_plus: ^8.1.2
 
 dev_dependencies:
   flutter_test:
@@ -45,10 +47,9 @@ flutter:
     - assets/translations/
   
 # dart pub global activate rps
-# --dart-define-from-file=lib/env.json
 scripts:
   test: flutter run -d chrome --wasm
-  build: flutter build web --wasm
+  build: flutter build web --wasm --dart-define-from-file=lib/env.json
 
 # For adding firebase https://firebase.flutter.dev/docs/overview, run:
 # > dart pub add firebase_core, firebase_auth, cloud_firestore, cloud_functions, firebase_storage, firebase_analytics, firebase_crashlytics, firebase_messaging

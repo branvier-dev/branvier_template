@@ -24,7 +24,10 @@ class DioService extends DioMixin {
   }
 
   /// Gets the authorization token.
-  String? get token => options.headers['authorization'] as String?;
+  String? get token {
+    final token = options.headers['authorization'] as String?;
+    return token?.replaceFirst('Bearer ', '');
+  }
 
   /// Sets the authorization token.
   set token(String? value) {
@@ -41,20 +44,23 @@ class DioService extends DioMixin {
     String path = '/uploads',
     String key = 'file',
   }) async {
+    final bytes = await file.readAsBytes();
+    final header = bytes.sublist(0, 12);
+
     final response = await post<Map>(
       path,
       data: FormData.fromMap({
         key: MultipartFile.fromBytes(
-          await file.readAsBytes(),
+          bytes,
           filename: file.name,
           contentType: MediaType.parse(
-            file.mimeType ?? lookupMimeType(file.name)!,
+            file.mimeType ?? lookupMimeType(file.name, headerBytes: header)!,
           ),
         ),
       }),
     );
 
-    if (response.data?['file'] case {'url': String url}) return url;
+    if (response.data?[key] case {'url': String url}) return url;
     throw Exception('Falha ao fazer upload do arquivo.');
   }
 }

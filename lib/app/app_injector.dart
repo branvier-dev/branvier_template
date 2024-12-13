@@ -2,44 +2,39 @@ import 'package:auto_injector/auto_injector.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-import 'features/auth/repositories/auth_repository.dart';
-import 'features/user/repositories/user_repository.dart';
-import 'services/api/dio_service.dart';
-import 'services/cache/cache_service.dart';
-import 'services/cache/shared_cache_service.dart';
-import 'shared/widgets/app_splash.dart';
-
-/// Whether the app is running in test mode.
-bool get kIsTest => _test;
-bool _test = false;
+import '../env.dart';
+import '../main_development.dart';
+import '../main_staging.dart';
 
 extension AppInjector on BuildContext {
   @visibleForTesting
-  static var i = AutoInjector();
+  static final i = AutoInjector();
 
   // Atalho para chamar os repositórios pelo `context`.
-  // Ex: `context<AuthRepository>()` ou simplesmente `i()`.
+  // Ex: `context.call<AuthRepository>()` ou simplesmente `i()`.
   T call<T>() => i();
 
-  /// Injects all dependencies and returns the service [Locator].
-  static Future<Locator> init({bool test = false}) async {
-    i = AutoInjector();
-    _test = test;
+  /// Injeta as dependências de acordo com [env] e retorna [Locator].
+  static Future<Locator> init({Env? env}) async {
+    i.reset();
 
-    // Abstracted Services
-    i.addInstance<CacheService>(
-      kIsTest ? FakeCacheService() : await SharedCacheService.init(),
-    );
-
-    // Services
-    i.addLazySingleton(DioService.new);
-
-    // Repositories
-    i.addLazySingleton(AuthRepository.new);
-    i.addLazySingleton(UserRepository.new);
-
-    await AppSplash.future;
+    await switch (env ?? Env.current) {
+      Env.development => i.addFakes(),
+      Env.staging => i.addImpls(test: true),
+      Env.production => i.addImpls(test: false),
+    };
 
     return i..commit();
+  }
+}
+
+extension AutoInjectorX on AutoInjector {
+  void reset() {
+    dispose((i) {
+      try {
+        // ignore: avoid_dynamic_calls // Descarta todos as instâncias.
+        i.dispose();
+      } catch (_) {}
+    });
   }
 }

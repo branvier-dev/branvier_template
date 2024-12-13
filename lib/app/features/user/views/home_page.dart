@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../stores/user_store.dart';
+import '../view_models/user_view_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<UserStore>().user;
+    final user = context.watch<UserViewModel>().user;
 
     return Scaffold(
       body: Center(
