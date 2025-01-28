@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_late_keyword
 import 'package:flutter/material.dart';
 import 'package:tr_extension/tr_extension.dart';
 
