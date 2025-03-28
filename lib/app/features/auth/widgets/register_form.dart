@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:formx/formx.dart';
-import 'package:gap/gap.dart';
 
 import '../models/register_dto.dart';
 import 'register_button.dart';
@@ -15,10 +14,10 @@ class RegisterForm extends StatelessWidget {
     return Form(
       key: const Key(key),
       child: Column(
+        spacing: 8,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text('Register Page'),
-          const Gap(80),
           TextFormField(
             key: const Key('name'),
             validator: Validator().required(),
@@ -26,7 +25,6 @@ class RegisterForm extends StatelessWidget {
               labelText: 'Nome',
             ),
           ),
-          const Gap(16),
           TextFormField(
             key: const Key('email'),
             validator: Validator().required().email(),
@@ -35,7 +33,6 @@ class RegisterForm extends StatelessWidget {
               suffixIcon: Icon(Icons.mail),
             ),
           ),
-          const Gap(16),
           TextFormField(
             key: const Key('password'),
             validator: Validator().required().minLength(6),
@@ -45,10 +42,10 @@ class RegisterForm extends StatelessWidget {
               suffixIcon: Icon(Icons.lock),
             ),
           ),
-          const Gap(32),
           RegisterButton(
             getDto: () {
               final map = context.submit(key: key);
+
               return RegisterDto.fromMap(map);
             },
           ),

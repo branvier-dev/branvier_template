@@ -1,3 +1,5 @@
+import 'package:provide_it/provide_it.dart';
+
 import '../models/login_dto.dart';
 import '../models/register_dto.dart';
 
@@ -17,3 +19,5 @@ abstract class AuthRepository {
   // Ao realizar o logout, o token e o usuário são removidos do cache.
   Future<void> logout();
 }
+
+final tokenRef = ProvideRef((String patientId) => 'token');

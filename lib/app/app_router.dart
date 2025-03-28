@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_provider/go_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:provide_it/provide_it.dart';
 
-import '../main.dart';
 import 'app_analytics.dart';
-import 'app_injector.dart';
-import 'features/auth/view_models/auth_view_model.dart';
+import 'features/auth/view_models/auth_store.dart';
 import 'features/auth/views/forgot_password_page.dart';
 import 'features/auth/views/initial_page.dart';
 import 'features/auth/views/login_page.dart';
@@ -16,8 +13,6 @@ import 'features/user/views/home_page.dart';
 import 'features/user/views/user_shell.dart';
 
 extension AppRouter on GoRouter {
-  /// Define as rotas da aplicação e [ViewModelProvider] para cada rota.
-  /// Use [GoProviderRoute] em vez de [GoRoute] para por um [ViewModelProvider].
   static final config = GoRouter(
     routes: [
       GoRoute(
@@ -25,7 +20,8 @@ extension AppRouter on GoRouter {
         /// Caso o usuário esteja logado, será redirecionado para a rota '/home'.
         path: '/',
         redirect: (context, __) async {
-          final isLogged = await context.read<AuthViewModel>().check();
+          final isLogged = await context.read<AuthStore>().check();
+
           return isLogged ? '/home' : null;
         },
         name: InitialPage.name,
@@ -50,15 +46,15 @@ extension AppRouter on GoRouter {
           ),
         ],
       ),
-      ShellProviderRoute(
-        /// Adicione providers acessíveis apenas para as rotas filhas.
-        providers: [
-          ViewModelProvider(create: (i) => UserViewModel(i())),
-        ],
-
+      ShellRoute(
         /// O [UserShell] envolve todas as telas filhas, adicionando elementos
         /// como barra de navegação ou menu lateral. Ficarão sempre visíveis.
-        builder: (_, __, child) => UserShell(child: child),
+        builder: (context, __, child) {
+          /// Adicione providers acessíveis apenas para as rotas filhas.
+          context.provide(UserViewModel.new);
+
+          return UserShell(child: child);
+        },
         routes: [
           GoRoute(
             path: '/home',
@@ -84,6 +80,11 @@ extension AppRouter on GoRouter {
       );
     });
   }
+}
+
+class PatientStore {
+  PatientStore({required this.patientId});
+  final String patientId;
 }
 
 extension AppRouterExtension on BuildContext {

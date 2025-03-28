@@ -1,6 +1,5 @@
+// ignore_for_file: type=lint
 import 'package:flutter/widgets.dart';
-
-import '../extensions/scrollable_extension.dart';
 
 /// A [NestedOverscroll] widget allows nested [Scrollable] widgets to overscroll
 /// their parent [Scrollable].
@@ -51,14 +50,15 @@ class _NestedOverscrollState extends State<NestedOverscroll> {
 
           // touch scrolling
           if (sn is OverscrollNotification && sn.velocity == 0) {
-            parent.position.jump(by: sn.overscroll);
+            parent.position
+                .jumpToClamped(parent.position.pixels + sn.overscroll);
 
             // inside inertia scrolling
           } else if (sn is OverscrollNotification) {
             _inscrolling[scrollable.hashCode] = true;
 
             parent.position
-                .animate(by: sn.velocity / 5)
+                .animateToClamped(parent.position.pixels + (sn.velocity / 5))
                 .whenComplete(() => _inscrolling[scrollable.hashCode] = false);
 
             // outside inertia scrolling
@@ -69,13 +69,27 @@ class _NestedOverscrollState extends State<NestedOverscroll> {
             final velocity = pps.dx + pps.dy; // one is always zero
 
             parent.position
-                .animate(by: -velocity / 5)
+                .animateToClamped(parent.position.pixels - (velocity / 5))
                 .whenComplete(() => _outscrolling[scrollable.hashCode] = false);
           }
           return true;
         },
         child: widget.child,
       ),
+    );
+  }
+}
+
+extension on ScrollPosition {
+  void jumpToClamped(double value) {
+    jumpTo(value.clamp(minScrollExtent, maxScrollExtent));
+  }
+
+  Future<void> animateToClamped(double value) {
+    return animateTo(
+      value.clamp(minScrollExtent, maxScrollExtent),
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.linearToEaseOut,
     );
   }
 }

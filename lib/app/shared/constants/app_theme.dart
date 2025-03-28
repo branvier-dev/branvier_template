@@ -31,7 +31,7 @@ extension on ColorScheme {
 
       // Components
       appBarTheme: const AppBarTheme(
-        surfaceTintColor: Colors.transparent,
+        surfaceTintColor: Colors.red,
       ),
       inputDecorationTheme: const InputDecorationTheme(
         isDense: true,

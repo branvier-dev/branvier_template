@@ -3,13 +3,13 @@ import '../models/register_dto.dart';
 import 'auth_repository.dart';
 
 class AuthRepositoryFake implements AuthRepository {
-  var _logged = false;
-
-  @override
-  Future<bool> check() async => _logged;
+  var _logged = true;
 
   @override
   bool get isLogged => _logged;
+
+  @override
+  Future<bool> check() async => _logged;
 
   @override
   Future<void> login(LoginDto dto) async {

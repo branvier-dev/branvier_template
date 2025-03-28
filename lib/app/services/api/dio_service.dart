@@ -26,6 +26,7 @@ class DioService extends DioMixin {
   /// Gets the authorization token.
   String? get token {
     final token = options.headers['authorization'] as String?;
+
     return token?.replaceFirst('Bearer ', '');
   }
 

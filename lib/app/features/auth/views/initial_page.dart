@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app_setup.dart';
@@ -17,15 +16,14 @@ class InitialPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
+          spacing: 8,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Initial Page'),
-            const Gap(16),
             ElevatedButton(
               onPressed: () => LoginPage.go(context),
               child: const Text('Login'),
             ),
-            const Gap(8),
             ElevatedButton(
               onPressed: () => RegisterPage.go(context),
               child: const Text('Register'),

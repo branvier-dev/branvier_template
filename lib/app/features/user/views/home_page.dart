@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:provide_it/provide_it.dart';
 
 import '../view_models/user_view_model.dart';
 
@@ -15,6 +15,9 @@ class HomePage extends StatelessWidget {
     final user = context.watch<UserViewModel>().user;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('aaa'),
+      ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

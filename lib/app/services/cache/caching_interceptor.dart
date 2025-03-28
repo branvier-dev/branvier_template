@@ -21,6 +21,7 @@ class CachingInterceptor extends Interceptor {
 
     if (cachedEntry != null) {
       final response = _buildResponse(cachedEntry, options);
+
       return handler.resolve(response);
     }
 
@@ -34,6 +35,7 @@ class CachingInterceptor extends Interceptor {
 
     if (cachedEntry != null) {
       final response = _buildResponse(cachedEntry, err.requestOptions);
+
       return handler.resolve(response);
     }
 
@@ -83,6 +85,7 @@ class NetworkCacheService {
     // Remove expired entries
     if (!entry.isValid) {
       await cache.remove(entry.key);
+
       return null;
     }
 
@@ -91,6 +94,7 @@ class NetworkCacheService {
 
   Future<void> putEntry(NetworkCacheEntry entry) async {
     final json = jsonEncode(entry.toJson());
+
     return cache.set(entry.key, json);
   }
 }

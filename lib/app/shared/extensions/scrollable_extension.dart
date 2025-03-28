@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: prefer_match_file_name
 extension Scrollables on ScrollPosition {
   static var duration = const Duration(milliseconds: 600);
   static var curve = Curves.linearToEaseOut;

@@ -3,29 +3,20 @@
 /// Para rodar/buildar em [production], sete as variável de ambiente em `env.json`:
 /// > `--dart-define-from-file=lib/env.json`
 enum Env {
-  /// Repositories locais, sem services.
   development,
-
-  /// Repositories remotos, services fakes.
   staging,
-
-  /// Repositories remotos e services reais.
   production;
 
   /// Inicializa o ambiente.
-  static void init(List<String> args) {
-    _current = switch (args) {
-      _ when isProd => production,
-      ['staging'] => staging,
-      _ => development,
-    };
-    print('Env.init: ${current.name}');
+  static void init(Env env) {
+    assert(_current == null, 'Env.current já foi inicializado.');
+    print('${_current = env} init');
   }
 
   // O ambiente atual.
-  static Env _current = development;
-  static Env get current => _current;
-  static bool get isDev => current == development;
+  static Env? _current;
+  static Env get current => ArgumentError.checkNotNull(_current, 'Env.current');
+  static bool get isDev => _current == development;
 
   // Váriaveis de ambiente.
   static const isProd = String.fromEnvironment('ENV') == 'production';

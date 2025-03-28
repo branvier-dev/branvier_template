@@ -14,6 +14,7 @@ abstract class CacheService {
   Stream<String?> getStream(String key) {
     _keys.add(key);
     refresh();
+
     return _controller.stream.map((map) => map[key]).distinct();
   }
 

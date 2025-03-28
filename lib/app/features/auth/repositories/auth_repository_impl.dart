@@ -4,14 +4,14 @@ import 'auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   @override
+  // TODO: implement isLogged
+  bool get isLogged => throw UnimplementedError();
+
+  @override
   Future<bool> check() {
     // TODO: implement check
     throw UnimplementedError();
   }
-
-  @override
-  // TODO: implement isLogged
-  bool get isLogged => throw UnimplementedError();
 
   @override
   Future<void> login(LoginDto dto) {
