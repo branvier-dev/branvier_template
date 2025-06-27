@@ -1,4 +1,7 @@
-// ignore_for_file: avoid_print
+import 'package:flutter_async/flutter_async.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
+import 'app/services/api/dio_service.dart';
 
 /// Para rodar/buildar em [production], sete as variável de ambiente em `env.json`:
 /// > `--dart-define-from-file=lib/env.json`
@@ -7,21 +10,24 @@ enum Env {
   staging,
   production;
 
-  /// Inicializa o ambiente.
-  static void init(Env env) {
-    assert(_current == null, 'Env.current já foi inicializado.');
-    print('${_current = env} init');
+  /// O ambiente atual.
+  static late Env current;
+
+  static Future<void> init(Env env) async {
+    current = env;
+    info ??= await PackageInfo.fromPlatform().orNull();
   }
 
-  // O ambiente atual.
-  static Env? _current;
-  static Env get current => ArgumentError.checkNotNull(_current, 'Env.current');
-  static bool get isDev => _current == development;
+  static PackageInfo? info;
+  static String get version => switch (current) {
+    production => 'v${info?.version}',
+    staging => 'v${info?.version} (staging)',
+    development => 'v${info?.version} (development)',
+  };
 
-  // Váriaveis de ambiente.
-  static const isProd = String.fromEnvironment('ENV') == 'production';
-  static const apiUrl = String.fromEnvironment('API_URL', defaultValue: _sUrl);
+  /// [DioService.options] baseUrl.
+  static String get apiUrl => switch (current) {
+    production => 'https://api.branvierapps.com',
+    _ => 'https://api-dev.branvierapps.com',
+  };
 }
-
-/// Staging API URL.
-const _sUrl = 'https://api-???.branvierapps.com';

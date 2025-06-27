@@ -48,7 +48,7 @@ class LoginForm extends StatelessWidget {
           ),
           LoginButton(
             getDto: () {
-              final map = context.submit(key: key);
+              final map = context.submit(key);
 
               return LoginDto.fromMap(map);
             },

@@ -1,23 +1,32 @@
-import 'package:provide_it/provide_it.dart';
-
 import '../models/login_dto.dart';
 import '../models/register_dto.dart';
 
-abstract class AuthRepository {
-  /// O método [isLogged] verifica se o usuário está logado.
-  bool get isLogged;
+class AuthRepository {
+  @override
+  // TODO: implement isLogged
+  bool get isLogged => throw UnimplementedError();
 
-  /// O método [check] carrega se o usuário está logado.
-  Future<bool> check();
+  @override
+  Future<bool> check() {
+    // TODO: implement check
+    throw UnimplementedError();
+  }
 
-  /// O método [login] realiza o login do usuário.
-  Future<void> login(LoginDto dto);
+  @override
+  Future<void> login(LoginDto dto) {
+    // TODO: implement login
+    throw UnimplementedError();
+  }
 
-  /// O método [register] realiza o cadastro do usuário.
-  Future<void> register(RegisterDto dto);
+  @override
+  Future<void> logout() {
+    // TODO: implement logout
+    throw UnimplementedError();
+  }
 
-  // Ao realizar o logout, o token e o usuário são removidos do cache.
-  Future<void> logout();
+  @override
+  Future<void> register(RegisterDto dto) {
+    // TODO: implement register
+    throw UnimplementedError();
+  }
 }
-
-final tokenRef = ProvideRef((String patientId) => 'token');

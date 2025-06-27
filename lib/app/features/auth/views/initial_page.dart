@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../app_setup.dart';
+import '../../../../env.dart';
 import 'login_page.dart';
 import 'register_page.dart';
 
@@ -28,7 +28,7 @@ class InitialPage extends StatelessWidget {
               onPressed: () => RegisterPage.go(context),
               child: const Text('Register'),
             ),
-            Text('App version: ${AppSetup.info?.version}'),
+            Text('App version: ${Env.version}'),
           ],
         ),
       ),

@@ -7,21 +7,24 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logarte/logarte.dart';
 import 'package:mime/mime.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../../env.dart';
+import '../../app_analytics.dart';
 import 'api_exception.dart';
 
 class DioService extends DioMixin {
   DioService() {
-    options = BaseOptions(baseUrl: Env.apiUrl);
     httpClientAdapter = HttpClientAdapter();
     interceptors.addAll([
-      PrettyDioLogger(),
       InterceptorsWrapper(onError: (e, h) => h.next(ApiException.from(e))),
+      LogarteDioInterceptor(logarte),
     ]);
   }
+
+  @override
+  BaseOptions get options => BaseOptions(baseUrl: Env.apiUrl);
 
   /// Gets the authorization token.
   String? get token {

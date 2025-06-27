@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_async/flutter_async.dart';
+import 'package:formx/formx.dart';
 import 'package:tr_extension/tr_extension.dart';
 
 import '../env.dart';
 import 'app_router.dart';
-import 'app_setup.dart';
 import 'shared/constants/app_theme.dart';
 
 class App extends StatelessWidget {
@@ -12,25 +13,28 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: Env.isDev,
+    Validator.translator = (key, errorText) => '$errorText.$key'.tr;
+    Async.translator = (e) => switch (e) {
+      ArgumentError(:String name) => 'form.invalid.$name'.tr,
+      _ => Async.defaultMessage(e),
+    };
 
-      // Localization
-      localizationsDelegates: TrDelegate(),
-      locale: context.locale,
-      supportedLocales: const [
-        Locale('pt', 'BR'),
-      ],
+    return MaterialApp.router(
+      // Routes
+      routerConfig: goRouter,
 
       // Theme
       themeMode: ThemeMode.light,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
 
-      // Routes
-      routerConfig: AppRouter.config,
+      // Localization
+      locale: context.locale,
+      localizationsDelegates: TrDelegate(),
+      supportedLocales: const [Locale('pt', 'BR')],
 
       // Overlays
+      debugShowCheckedModeBanner: Env.current == Env.development,
       builder: (_, child) => AppBuilder(builder ?? (_) => child!),
     );
   }
@@ -52,7 +56,7 @@ class AppBuilder extends StatelessWidget {
             children: [
               builder(context),
               Text(
-                AppSetup.version,
+                Env.version,
                 style: const TextStyle(fontSize: 10, color: Colors.grey),
               ),
             ],

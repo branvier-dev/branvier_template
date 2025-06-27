@@ -21,9 +21,7 @@ class RegisterForm extends StatelessWidget {
           TextFormField(
             key: const Key('name'),
             validator: Validator().required(),
-            decoration: const InputDecoration(
-              labelText: 'Nome',
-            ),
+            decoration: const InputDecoration(labelText: 'Nome'),
           ),
           TextFormField(
             key: const Key('email'),
@@ -44,7 +42,7 @@ class RegisterForm extends StatelessWidget {
           ),
           RegisterButton(
             getDto: () {
-              final map = context.submit(key: key);
+              final map = context.submit(key);
 
               return RegisterDto.fromMap(map);
             },

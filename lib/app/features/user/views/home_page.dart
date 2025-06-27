@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provide_it/provide_it.dart';
 
-import '../view_models/user_view_model.dart';
+import '../view_models/user_notifier.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,12 +12,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<UserViewModel>().user;
+    final user = context.watch<UserNotifier>().user;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('aaa'),
-      ),
+      appBar: AppBar(title: const Text('aaa')),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

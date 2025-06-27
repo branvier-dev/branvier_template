@@ -1,9 +1,19 @@
+import '../../../services/api/dio_service.dart';
+import '../../../services/cache/cache_service.dart';
 import '../models/user_model.dart';
 
-abstract class UserRepository {
-  /// Retorna o usuário logado.
-  Future<UserModel> getUser();
+class UserRepository {
+  UserRepository(this._api, this._cache);
+  final DioService _api;
+  final CacheService _cache;
 
-  /// Atualiza o usuário logado.
-  Future<void> updateUser(UserModel user);
+  Future<UserModel> getUser() {
+    // TODO: implement getUser
+    throw UnimplementedError();
+  }
+
+  Future<void> updateUser(UserModel user) {
+    // TODO: implement updateUser
+    throw UnimplementedError();
+  }
 }

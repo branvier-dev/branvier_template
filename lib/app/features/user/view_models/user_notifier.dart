@@ -4,8 +4,8 @@ import 'package:flutter_async/flutter_async.dart';
 import '../models/user_model.dart';
 import '../repositories/user_repository.dart';
 
-class UserViewModel extends ChangeNotifier {
-  UserViewModel(this.repository) {
+class UserNotifier extends ChangeNotifier {
+  UserNotifier(this.repository) {
     getUser();
   }
   final UserRepository repository;
