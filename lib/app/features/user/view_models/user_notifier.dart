@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_async/flutter_async.dart';
 
-import '../models/user_model.dart';
+import '../models/user.dart';
 import '../repositories/user_repository.dart';
 
 class UserNotifier extends ChangeNotifier {
@@ -9,16 +9,16 @@ class UserNotifier extends ChangeNotifier {
     getUser();
   }
   final UserRepository repository;
-  UserModel? _user;
+  User? _user;
 
-  UserModel get user => _user ?? const UserModel();
+  User get user => _user ?? User.empty;
 
   Future<void> getUser() async {
     _user = await repository.getUser().showLoading().showSnackBar();
     notifyListeners();
   }
 
-  Future<void> updateUser(UserModel user) async {
+  Future<void> updateUser(User user) async {
     await repository.updateUser(user);
     await getUser();
   }

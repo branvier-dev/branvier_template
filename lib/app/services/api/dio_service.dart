@@ -9,40 +9,40 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logarte/logarte.dart';
 import 'package:mime/mime.dart';
+import 'package:provide_it/provide_it.dart';
 
 import '../../../env.dart';
 import '../../app_analytics.dart';
+import '../../app_router.dart';
+import '../../features/auth/repositories/auth_repository.dart';
+import '../../features/auth/views/login_page.dart';
 import 'api_exception.dart';
 
 class DioService extends DioMixin {
   DioService() {
     httpClientAdapter = HttpClientAdapter();
-    interceptors.addAll([
-      InterceptorsWrapper(onError: (e, h) => h.next(ApiException.from(e))),
-      LogarteDioInterceptor(logarte),
-    ]);
+    interceptors.addAll([ErrorInterceptor(), LogarteDioInterceptor(logarte)]);
   }
 
   @override
-  BaseOptions get options => BaseOptions(baseUrl: Env.apiUrl);
+  BaseOptions get options => BaseOptions(
+    baseUrl: Env.apiUrl,
+    // headers: {'ngrok-skip-browser-warning': '69420'},
+  );
 
-  /// Gets the authorization token.
-  String? get token {
-    final token = options.headers['authorization'] as String?;
+  String? get token =>
+      options.headers['authorization']?.toString().replaceFirst('Bearer ', '');
 
-    return token?.replaceFirst('Bearer ', '');
-  }
-
-  /// Sets the authorization token.
   set token(String? value) {
     options.headers['authorization'] = switch (value) {
       null => options.headers.remove('authorization'),
+      var token when token.startsWith('Bearer ') => token,
       var token => 'Bearer $token',
     };
   }
 
-  /// Atalho para realizar upload de arquivos.
-  /// Atualize o path, key e o retorno do arquivo de acordo com a API.
+  /// Faz upload de [file] e obtem sua `url`.
+  /// - Atualize [path], [key] e `data.url` de acordo com o servidor.
   Future<String> upload(
     XFile file, {
     String path = '/uploads',
@@ -77,4 +77,18 @@ Future<String> jlog(Object? object) async {
   await Clipboard.setData(ClipboardData(text: json));
 
   return json;
+}
+
+class ErrorInterceptor extends Interceptor {
+  ErrorInterceptor();
+
+  @override
+  Future<void> onError(err, handler) async {
+    if (err.response?.statusCode == 401) {
+      await readIt<AuthRepository>().logout();
+      goRouter.goNamed(LoginPage.name);
+    }
+
+    super.onError(ApiException.from(err), handler);
+  }
 }

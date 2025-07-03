@@ -5,7 +5,7 @@ import 'package:provide_it/provide_it.dart';
 import 'app/app.dart';
 import 'app/features/auth/repositories/auth_repository.dart';
 import 'app/features/auth/repositories/auth_repository_fake.dart';
-import 'app/features/auth/view_models/auth_store.dart';
+import 'app/features/auth/view_models/auth_notifier.dart';
 import 'app/features/user/repositories/user_repository.dart';
 import 'app/features/user/repositories/user_repository_fake.dart';
 import 'app/services/api/dio_service.dart';
@@ -33,7 +33,7 @@ Future<void> run(Env env, [WidgetBuilder? builder]) async {
         context.provide(UserRepository.new);
 
         // Stores
-        context.provide(AuthStore.new);
+        context.provide(AuthNotifier.new);
       },
       override: (context) {
         if (Env.current != Env.development) return;

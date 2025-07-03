@@ -5,23 +5,16 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 @immutable
-class UserModel {
-  const UserModel({
-    this.id = '',
-    this.name = '',
-    this.email = '',
-  });
+class User {
+  const User({this.id = '', this.name = '', this.email = ''});
+  static const empty = User(id: '-1');
 
   final String id;
   final String name;
   final String email;
 
-  UserModel copyWith({
-    String? id,
-    String? name,
-    String? email,
-  }) {
-    return UserModel(
+  User copyWith({String? id, String? name, String? email}) {
+    return User(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
@@ -29,18 +22,14 @@ class UserModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'email': email,
-    };
+    return {'id': id, 'name': name, 'email': email};
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory User.fromMap(Map<String, dynamic> map) {
     T cast<T>(String k) => map[k] is T
         ? map[k] as T
         : throw ArgumentError.value(map[k], k, '$T ← ${map[k].runtimeType}');
-    return UserModel(
+    return User(
       id: cast<String>('id'),
       name: cast<String>('name'),
       email: cast<String>('email'),
@@ -49,8 +38,8 @@ class UserModel {
 
   String toJson() => json.encode(toMap());
 
-  factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory User.fromJson(String source) =>
+      User.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'User(id: $id, name: $name, email: $email)';
@@ -59,7 +48,7 @@ class UserModel {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is UserModel &&
+    return other is User &&
         other.id == id &&
         other.name == name &&
         other.email == email;

@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_async/flutter_async.dart';
 import 'package:formx/formx.dart';
+import 'package:provide_it/provide_it.dart';
 
+import '../../user/views/home_page.dart';
 import '../models/register_dto.dart';
-import 'register_button.dart';
+import '../view_models/auth_notifier.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({super.key});
 
+  static const _key = 'register_form';
+  static Future<void> submit(BuildContext context) async {
+    final map = context.submit(_key);
+    final dto = RegisterDto.fromMap(map);
+
+    await context.read<AuthNotifier>().register(dto);
+  }
+
   @override
   Widget build(BuildContext context) {
-    const key = 'register_form';
-
     return Form(
-      key: const Key(key),
+      key: const Key(_key),
       child: Column(
         spacing: 8,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -40,15 +49,25 @@ class RegisterForm extends StatelessWidget {
               suffixIcon: Icon(Icons.lock),
             ),
           ),
-          RegisterButton(
-            getDto: () {
-              final map = context.submit(key);
-
-              return RegisterDto.fromMap(map);
-            },
-          ),
+          const _RegisterButton(),
         ],
       ),
     );
+  }
+}
+
+class _RegisterButton extends StatelessWidget {
+  const _RegisterButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton(
+      onPressed: () async {
+        await RegisterForm.submit(context);
+
+        if (context.mounted) HomePage.go(context);
+      },
+      child: const Text('Cadastrar'),
+    ).asAsync();
   }
 }

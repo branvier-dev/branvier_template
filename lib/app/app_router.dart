@@ -3,7 +3,7 @@ import 'package:logarte/logarte.dart';
 import 'package:provide_it/provide_it.dart';
 
 import 'app_analytics.dart';
-import 'features/auth/view_models/auth_store.dart';
+import 'features/auth/view_models/auth_notifier.dart';
 import 'features/auth/views/forgot_password_page.dart';
 import 'features/auth/views/initial_page.dart';
 import 'features/auth/views/login_page.dart';
@@ -15,12 +15,11 @@ import 'features/user/views/user_shell.dart';
 final goRouter = GoRouter(
   observers: _observers,
   routes: [
+    // Auth
     GoRoute(
-      /// Por padrão, o [GoRouter] tentará sempre acessar a rota '/'.
-      /// Caso o usuário esteja logado, será redirecionado para a rota '/home'.
       path: '/',
       redirect: (context, _) async {
-        final isLogged = await context.read<AuthStore>().check();
+        final isLogged = await context.read<AuthNotifier>().check();
 
         return isLogged ? '/home' : null;
       },
@@ -46,6 +45,8 @@ final goRouter = GoRouter(
         ),
       ],
     ),
+
+    // User
     ShellRoute(
       observers: _observers,
       builder: (context, _, child) {
