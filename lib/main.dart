@@ -27,6 +27,7 @@ Future<void> run(Env env, [WidgetBuilder? builder]) async {
         // Services
         context.provide(DioService.new);
         context.provide<CacheService>(CacheServiceImpl.async);
+        // context.provide(FirebaseService.async);
 
         // Repositories
         context.provide(AuthRepository.new);

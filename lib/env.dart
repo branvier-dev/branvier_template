@@ -3,8 +3,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import 'app/services/api/dio_service.dart';
 
-/// Para rodar/buildar em [production], sete as variável de ambiente em `env.json`:
-/// > `--dart-define-from-file=lib/env.json`
 enum Env {
   development,
   staging,
