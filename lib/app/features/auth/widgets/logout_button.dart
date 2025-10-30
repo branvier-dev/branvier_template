@@ -13,7 +13,7 @@ class LogoutButton extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.logout),
       onPressed: () async {
-        await context.read<AuthNotifier>().logout();
+        await context.read<AuthStore>().logout();
         if (context.mounted) LoginPage.go(context);
       },
     ).asAsync();

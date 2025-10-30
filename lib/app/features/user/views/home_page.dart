@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
     final user = context.watch<UserNotifier>().user;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('aaa')),
+      appBar: AppBar(title: const Text('Home Page')),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

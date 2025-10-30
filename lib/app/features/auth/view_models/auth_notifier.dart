@@ -4,8 +4,8 @@ import '../models/login_dto.dart';
 import '../models/register_dto.dart';
 import '../repositories/auth_repository.dart';
 
-class AuthNotifier extends ChangeNotifier {
-  AuthNotifier(this._repository);
+class AuthStore extends ChangeNotifier {
+  AuthStore(this._repository);
   final AuthRepository _repository;
 
   /// Verifica se o usuário está logado.

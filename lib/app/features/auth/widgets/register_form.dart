@@ -15,7 +15,7 @@ class RegisterForm extends StatelessWidget {
     final map = context.submit(_key);
     final dto = RegisterDto.fromMap(map);
 
-    await context.read<AuthNotifier>().register(dto);
+    await context.read<AuthStore>().register(dto);
   }
 
   @override

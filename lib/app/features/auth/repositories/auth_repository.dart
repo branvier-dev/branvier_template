@@ -2,31 +2,16 @@ import '../models/login_dto.dart';
 import '../models/register_dto.dart';
 
 class AuthRepository {
-  @override
-  // TODO: implement isLogged
-  bool get isLogged => throw UnimplementedError();
+  bool get isLogged => true;
 
-  @override
-  Future<bool> check() {
-    // TODO: implement check
-    throw UnimplementedError();
+  Future<bool> check() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return isLogged;
   }
 
-  @override
-  Future<void> login(LoginDto dto) {
-    // TODO: implement login
-    throw UnimplementedError();
-  }
+  Future<void> login(LoginDto dto) async {}
 
-  @override
-  Future<void> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
-  }
+  Future<void> logout() async {}
 
-  @override
-  Future<void> register(RegisterDto dto) {
-    // TODO: implement register
-    throw UnimplementedError();
-  }
+  Future<void> register(RegisterDto dto) async {}
 }

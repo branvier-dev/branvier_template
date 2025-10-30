@@ -17,7 +17,7 @@ class LoginForm extends StatelessWidget {
     final map = context.submit(_key);
     final dto = LoginDto.fromMap(map);
 
-    await context.read<AuthNotifier>().login(dto);
+    await context.read<AuthStore>().login(dto);
   }
 
   @override

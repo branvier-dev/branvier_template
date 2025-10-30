@@ -7,13 +7,14 @@ class UserRepository {
   final DioService _api;
   final CacheService _cache;
 
-  Future<User> getUser() {
-    // TODO: implement getUser
-    throw UnimplementedError();
+  Future<User> getUser() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return const User(
+      id: '-1',
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+    );
   }
 
-  Future<void> updateUser(User user) {
-    // TODO: implement updateUser
-    throw UnimplementedError();
-  }
+  Future<void> updateUser(User user) async {}
 }

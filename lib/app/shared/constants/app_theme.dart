@@ -30,12 +30,13 @@ extension on ColorScheme {
       visualDensity: VisualDensity.standard,
 
       // Components
-      appBarTheme: const AppBarTheme(
-        surfaceTintColor: Colors.red,
-      ),
+      appBarTheme: const AppBarTheme(surfaceTintColor: Colors.red),
       inputDecorationTheme: const InputDecorationTheme(
         isDense: true,
         constraints: BoxConstraints(maxWidth: 600),
+      ),
+      snackBarTheme: const SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }

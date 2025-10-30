@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_async/flutter_async.dart';
 import 'package:formx/formx.dart';
@@ -13,12 +14,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Validator.translator = (key, errorText) => '$errorText.$key'.tr;
-    Async.translator = (e) => switch (e) {
-      ArgumentError(:String name) => 'form.invalid.$name'.tr,
-      _ => Async.defaultMessage(e),
-    };
-
     return MaterialApp.router(
       // Routes
       routerConfig: goRouter,
@@ -30,7 +25,7 @@ class App extends StatelessWidget {
 
       // Localization
       locale: context.locale,
-      localizationsDelegates: TrDelegate(),
+      localizationsDelegates: TrDelegate(reloadOnHotReload: !kIsWeb),
       supportedLocales: const [Locale('pt', 'BR')],
 
       // Overlays
@@ -46,6 +41,12 @@ class AppBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Validator.translator = (key, errorText) => '$errorText.$key'.tr;
+    Async.translator = (e) => switch (e) {
+      ArgumentError(:String name) => 'form.invalid.$name'.tr,
+      _ => Async.defaultMessage(e),
+    };
+
     return Scaffold(
       body: MediaQuery(
         data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),

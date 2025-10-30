@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logarte/logarte.dart';
 import 'package:provide_it/provide_it.dart';
@@ -13,13 +14,13 @@ import 'features/user/views/home_page.dart';
 import 'features/user/views/user_shell.dart';
 
 final goRouter = GoRouter(
-  observers: _observers,
+  onEnter: _Route.onEnter,
   routes: [
     // Auth
     GoRoute(
       path: '/',
       redirect: (context, _) async {
-        final isLogged = await context.read<AuthNotifier>().check();
+        final isLogged = await context.read<AuthStore>().check();
 
         return isLogged ? '/home' : null;
       },
@@ -48,7 +49,6 @@ final goRouter = GoRouter(
 
     // User
     ShellRoute(
-      observers: _observers,
       builder: (context, _, child) {
         context.provide(UserNotifier.new);
 
@@ -63,22 +63,44 @@ final goRouter = GoRouter(
       ],
     ),
   ],
-)..addAnalytics();
+);
 
-/// Adicionar no [GoRouter] e nos [ShellRoute] para logs.
-final _observers = [LogarteNavigatorObserver(logarte)];
+class _Route extends Route {
+  _Route(String? name) : super(settings: RouteSettings(name: name));
 
-extension on GoRouter {
-  void addAnalytics() {
-    routerDelegate.addListener(() {
-      // FirebaseAnalytics.instance.logScreenView(
-      //   screenName: state.name,
-      //   screenClass: state.name,
-      //   parameters: {
-      //     'path': state.fullPath,
-      //     ...?state.pathParameters,
-      //   },
-      // );
-    });
+  static OnEnter get onEnter => (context, prev, next, router) {
+    /// Enviamos logs de navegação pro Logarte.
+    logarte.navigation(
+      previousRoute: _Route(prev.name),
+      route: _Route(next.name),
+      action: NavigationAction.push,
+    );
+    return const Allow();
+  };
+}
+
+extension BuildContextX on BuildContext {
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(this).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Future<bool> showAlertDialog({
+    required String title,
+    required String content,
+    String confirmText = 'OK',
+  }) {
+    return showDialog<bool>(
+      context: this,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(confirmText),
+          ),
+        ],
+      ),
+    ).then((v) => v ?? false);
   }
 }

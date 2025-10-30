@@ -19,13 +19,15 @@ enum Env {
   static PackageInfo? info;
   static String get version => switch (current) {
     production => 'v${info?.version}',
-    staging => 'v${info?.version} (staging)',
-    development => 'v${info?.version} (development)',
+    _ => 'v${info?.version} (${current.name})', // ex: v1.0.0 (staging)
   };
 
   /// [DioService.options] baseUrl.
-  static String get apiUrl => switch (current) {
-    production => 'https://api.branvierapps.com',
-    _ => 'https://api-dev.branvierapps.com',
-  };
+  static String get apiUrl => String.fromEnvironment(
+    'API_URL', // definida via --dart-define=API_URL
+    defaultValue: switch (current) {
+      production => 'https://api.branvierapps.com',
+      _ => 'https://api-dev.branvierapps.com',
+    },
+  );
 }

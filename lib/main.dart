@@ -4,16 +4,14 @@ import 'package:provide_it/provide_it.dart';
 
 import 'app/app.dart';
 import 'app/features/auth/repositories/auth_repository.dart';
-import 'app/features/auth/repositories/auth_repository_fake.dart';
 import 'app/features/auth/view_models/auth_notifier.dart';
 import 'app/features/user/repositories/user_repository.dart';
-import 'app/features/user/repositories/user_repository_fake.dart';
 import 'app/services/api/dio_service.dart';
 import 'app/services/cache/cache_service.dart';
 import 'app/services/cache/cache_service_impl.dart';
 import 'env.dart';
 
-void main() => run(kReleaseMode ? Env.production : Env.development);
+void main() => run(kReleaseMode ? Env.production : Env.staging);
 
 /// Inicializa o app com o ambiente [env].
 ///
@@ -34,13 +32,7 @@ Future<void> run(Env env, [WidgetBuilder? builder]) async {
         context.provide(UserRepository.new);
 
         // Stores
-        context.provide(AuthNotifier.new);
-      },
-      override: (context) {
-        if (Env.current != Env.development) return;
-
-        context.provide<AuthRepository>(AuthRepositoryFake.new);
-        context.provide<UserRepository>(UserRepositoryFake.new);
+        context.provide(AuthStore.new);
       },
       child: App(builder: builder),
     ),
